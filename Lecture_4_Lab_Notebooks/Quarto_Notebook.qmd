@@ -1,0 +1,71 @@
+---
+title: "Quarto Notebook"
+author: "Guillem Ylla"
+format: html
+editor: visual
+---
+
+# Guillem Lab Notebook
+
+-   Project: Teaching Jupyter
+
+-   Date: 04/01/2024
+
+## Calculations in R
+
+In the chunks below, I will do some R calculations.
+
+```{r}
+A<-3
+B<-4
+C<-6
+```
+
+I want the sum of A, B, and C.
+
+```{r}
+A+B+C
+```
+
+I want to add a plot.
+
+```{r}
+barplot(c(A,B,C))
+```
+
+## Calculations in Python
+
+```{python}
+
+PythonStr="This is python code!"
+
+print(PythonStr)
+```
+
+Another Python chunk:
+
+```{python}
+D=5
+E=6
+
+D+E
+```
+
+## Bash Command line
+
+List files in directory:
+
+```{bash}
+ls
+```
+
+```{bash}
+cd ..
+ls
+```
+
+## Session Info
+
+```{r}
+sessionInfo()
+```
