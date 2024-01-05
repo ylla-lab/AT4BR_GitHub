@@ -8,7 +8,7 @@
 
 <meta name="author" content="Guillem Ylla">
 
-<title>Quarto Notebook #2</title>
+<title>Quarto Notebook 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -84,6 +84,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -119,6 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#add-figure" id="toc-add-figure" class="nav-link" data-scroll-target="#add-figure">Add figure</a></li>
   <li><a href="#cross-reference" id="toc-cross-reference" class="nav-link" data-scroll-target="#cross-reference">Cross-reference</a></li>
+  <li><a href="#citations-and-bibliography" id="toc-citations-and-bibliography" class="nav-link" data-scroll-target="#citations-and-bibliography">Citations and Bibliography</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
   </ul></li>
   </ul>
@@ -128,7 +148,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Quarto Notebook #2</h1>
+<h1 class="title">Quarto Notebook 2</h1>
 </div>
 
 
@@ -216,6 +236,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="cross-reference">Cross-reference</h2>
 <p>I can here reference to any element such as a figure <a href="#fig-figure">Figure&nbsp;1</a> (chunk label must start with <em>fig-</em>) or tables. Using @ or Insert-&gt;Cross Reference .</p>
 </section>
+<section id="citations-and-bibliography" class="level2">
+<h2 class="anchored" data-anchor-id="citations-and-bibliography">Citations and Bibliography</h2>
+<ul>
+<li><p>Compatible with Zotero (<a href="https://quarto.org/docs/visual-editor/vscode/">see more</a>).</p>
+<ul>
+<li><p>Insert -&gt; Citation sould show your local Zotero library.</p></li>
+<li><p>You can also connect it to Zotero web API.</p></li>
+</ul></li>
+<li><p>You can cite by doi.</p>
+<h3 id="how-to-cite" class="anchored">How to cite</h3></li>
+<li><p>You can use insert option or directly using “@”.</p>
+<p>Here, I will be citing my paper <span class="citation" data-cites="ylla2021">Ylla et al. (<a href="#ref-ylla2021" role="doc-biblioref">2021</a>)</span>. I can also cite by doi a paper not in my Zotero. Fore example <span class="citation" data-cites="watson1953">WATSON and CRICK (<a href="#ref-watson1953" role="doc-biblioref">1953</a>)</span>.</p></li>
+<li><p>Citation style by default is Chicago Manual of Style. You can be changed providing the style .cls file in YML “csl: stylefile.csl”.</p></li>
+<li><p>More on citation: <a href="https://quarto.org/docs/authoring/footnotes-and-citations.html" class="uri">https://quarto.org/docs/authoring/footnotes-and-citations.html</a></p></li>
+</ul>
+</section>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
@@ -250,10 +286,18 @@ loaded via a namespace (and not attached):
 [13] jsonlite_1.8.7    rlang_1.1.1       evaluate_0.21    </code></pre>
 </div>
 </div>
+
 </section>
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-watson1953" class="csl-entry" role="doc-biblioentry">
+WATSON, J. D., and F. H. C. CRICK. 1953. <span>“Molecular Structure of Nucleic Acids: A Structure for Deoxyribose Nucleic Acid.”</span> <em>Nature</em> 171 (4356): 737–38. <a href="https://doi.org/10.1038/171737a0">https://doi.org/10.1038/171737a0</a>.
+</div>
+<div id="ref-ylla2021" class="csl-entry" role="doc-biblioentry">
+Ylla, Guillem, Taro Nakamura, Takehiko Itoh, Rei Kajitani, Atsushi Toyoda, Sayuri Tomonari, Tetsuya Bando, et al. 2021. <span>“Insights into the Genomic Evolution of Insects from Cricket Genomes.”</span> <em>Communications Biology</em> 4 (1): 733. <a href="https://doi.org/10.1038/s42003-021-02197-9">https://doi.org/10.1038/s42003-021-02197-9</a>.
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

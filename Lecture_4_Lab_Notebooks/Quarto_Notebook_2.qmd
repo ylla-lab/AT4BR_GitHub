@@ -1,14 +1,15 @@
 ---
-title: "Quarto Notebook #2"
+title: "Quarto Notebook 2"
 author: "Guillem Ylla"
 format: 
-  html:
+  pdf:
     toc: true
     theme: lumen
     code-fold: FALSE
 editor: visual
 execute:
   cache: false
+bibliography: references.bib
 ---
 
 # Guillem Lab Notebook #2
@@ -23,7 +24,7 @@ Allows us to set different parameters to the Quarto notebook and how it will be 
 
 ## Chunk options
 
-### Old way
+### RMarkdown  old way
 
 In the top right corner of the chunk we have different options (in source mode) to decide what to do with the chunk. This method comes from the Rmarkdwon times.
 
@@ -33,7 +34,7 @@ The following chunk will show code but don't run it because include=TRUE and eva
 1 + 1
 ```
 
-### Modern way
+### Modern Quarto way
 
 In the YAML, by default we defined "code-fold: FALSE". But now, I want to fold following chunk. We can modify the behavior adding "#\| code-fold: TRUE" in the top of the chunk.
 
@@ -83,7 +84,25 @@ barplot(c(A,B,C))
 
 I can here reference to any element such as a figure @fig-figure (chunk label must start with *fig-*) or tables. Using @ or Insert-\>Cross Reference .
 
-## Bibliography
+## Citations and Bibliography
+
+-   Compatible with Zotero ([see more](https://quarto.org/docs/visual-editor/vscode/)).
+
+    -   Insert -\> Citation sould show your local Zotero library.
+
+    -   You can also connect it to Zotero web API.
+
+-   You can cite by doi.
+
+    ### How to cite
+
+-   You can use insert option or directly using "\@".
+
+    Here, I will be citing my paper @ylla2021. I can also cite by doi a paper not in my Zotero. Fore example @watson1953.
+
+-   Citation style by default is Chicago Manual of Style. You can be changed providing the style .cls file in YML "csl: stylefile.csl".
+
+-   More on citation: <https://quarto.org/docs/authoring/footnotes-and-citations.html>
 
 ## Session Info
 
