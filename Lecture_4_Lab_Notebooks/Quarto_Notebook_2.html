@@ -8,7 +8,7 @@
 
 <meta name="author" content="Guillem Ylla">
 
-<title>Quarto Notebook</title>
+<title>Quarto Notebook #2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -87,29 +87,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="Quarto_Notebook_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Quarto_Notebook_files/libs/quarto-html/quarto.js"></script>
-<script src="Quarto_Notebook_files/libs/quarto-html/popper.min.js"></script>
-<script src="Quarto_Notebook_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="Quarto_Notebook_files/libs/quarto-html/anchor.min.js"></script>
-<link href="Quarto_Notebook_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Quarto_Notebook_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="Quarto_Notebook_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="Quarto_Notebook_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="Quarto_Notebook_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Quarto_Notebook_2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Quarto_Notebook_2_files/libs/quarto-html/quarto.js"></script>
+<script src="Quarto_Notebook_2_files/libs/quarto-html/popper.min.js"></script>
+<script src="Quarto_Notebook_2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Quarto_Notebook_2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Quarto_Notebook_2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Quarto_Notebook_2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Quarto_Notebook_2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Quarto_Notebook_2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Quarto_Notebook_2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#guillem-lab-notebook-2" id="toc-guillem-lab-notebook-2" class="nav-link active" data-scroll-target="#guillem-lab-notebook-2">Guillem Lab Notebook #2</a>
+  <ul class="collapse">
+  <li><a href="#yaml-code-1st-chunk" id="toc-yaml-code-1st-chunk" class="nav-link" data-scroll-target="#yaml-code-1st-chunk">YAML code (1st Chunk)</a></li>
+  <li><a href="#chunk-options" id="toc-chunk-options" class="nav-link" data-scroll-target="#chunk-options">Chunk options</a>
+  <ul class="collapse">
+  <li><a href="#old-way" id="toc-old-way" class="nav-link" data-scroll-target="#old-way">Old way</a></li>
+  <li><a href="#modern-way" id="toc-modern-way" class="nav-link" data-scroll-target="#modern-way">Modern way</a></li>
+  </ul></li>
+  <li><a href="#add-figure" id="toc-add-figure" class="nav-link" data-scroll-target="#add-figure">Add figure</a></li>
+  <li><a href="#cross-reference" id="toc-cross-reference" class="nav-link" data-scroll-target="#cross-reference">Cross-reference</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Quarto Notebook</h1>
+<h1 class="title">Quarto Notebook #2</h1>
 </div>
 
 
@@ -130,86 +149,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="guillem-lab-notebook" class="level1">
-<h1>Guillem Lab Notebook</h1>
+<section id="guillem-lab-notebook-2" class="level1">
+<h1>Guillem Lab Notebook #2</h1>
 <ul>
-<li><p>Project: Teaching Jupyter</p></li>
+<li><p>Project: Teaching Quarto #2</p></li>
 <li><p>Date: 04/01/2024</p></li>
 </ul>
-<section id="calculations-in-r" class="level2">
-<h2 class="anchored" data-anchor-id="calculations-in-r">Calculations in R</h2>
-<p>In the chunks below, I will do some R calculations.</p>
+<section id="yaml-code-1st-chunk" class="level2">
+<h2 class="anchored" data-anchor-id="yaml-code-1st-chunk">YAML code (1st Chunk)</h2>
+<p>Allows us to set different parameters to the Quarto notebook and how it will be rendered.</p>
+</section>
+<section id="chunk-options" class="level2">
+<h2 class="anchored" data-anchor-id="chunk-options">Chunk options</h2>
+<section id="old-way" class="level3">
+<h3 class="anchored" data-anchor-id="old-way">Old way</h3>
+<p>In the top right corner of the chunk we have different options (in source mode) to decide what to do with the chunk. This method comes from the Rmarkdwon times.</p>
+<p>The following chunk will show code but don’t run it because include=TRUE and eval=FALSE in the chunk header</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>A<span class="ot">&lt;-</span><span class="dv">3</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>B<span class="ot">&lt;-</span><span class="dv">4</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>C<span class="ot">&lt;-</span><span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>I want the sum of A, B, and C.</p>
+</section>
+<section id="modern-way" class="level3">
+<h3 class="anchored" data-anchor-id="modern-way">Modern way</h3>
+<p>In the YAML, by default we defined “code-fold: FALSE”. But now, I want to fold following chunk. We can modify the behavior adding “#| code-fold: TRUE” in the top of the chunk.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>A<span class="sc">+</span>B<span class="sc">+</span>C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">+</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 13</code></pre>
+<pre><code>[1] 4</code></pre>
 </div>
 </div>
-<p>I want to add a plot.</p>
+<p>Now we will see the code (“#| echo: true”) but won’t run it (“#| eval: false”)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">c</span>(A,B,C))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">+</span><span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>A<span class="ot">=</span><span class="dv">5</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>B<span class="ot">=</span><span class="dv">5</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>C<span class="ot">=</span><span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>A<span class="sc">+</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="add-figure" class="level2">
+<h2 class="anchored" data-anchor-id="add-figure">Add figure</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">c</span>(A,B,C))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Quarto_Notebook_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<div id="fig-figure" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Quarto_Notebook_2_files/figure-html/fig-figure-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Caption for the figure</figcaption><p></p>
+</figure>
 </div>
-</div>
-</section>
-<section id="calculations-in-python" class="level2">
-<h2 class="anchored" data-anchor-id="calculations-in-python">Calculations in Python</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>PythonStr<span class="op">=</span><span class="st">"This is python code!"</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(PythonStr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>This is python code!</code></pre>
-</div>
-</div>
-<p>Another Python chunk:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>D<span class="op">=</span><span class="dv">5</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>E<span class="op">=</span><span class="dv">6</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>D<span class="op">+</span>E</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>11</code></pre>
 </div>
 </div>
 </section>
-<section id="bash-command-line" class="level2">
-<h2 class="anchored" data-anchor-id="bash-command-line">Bash Command line</h2>
-<p>List files in directory:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Basic_Markdown_Notebook.md
-Jupyter_Notebook.ipynb
-Quarto_Notebook_2.qmd
-Quarto_Notebook_files
-Quarto_Notebook.html
-Quarto_Notebook.odt
-Quarto_Notebook.qmd
-Quarto_Notebook.rmarkdown</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Lecture_4_Lab_Notebooks
-README.md
-Untitled.ipynb</code></pre>
-</div>
-</div>
+<section id="cross-reference" class="level2">
+<h2 class="anchored" data-anchor-id="cross-reference">Cross-reference</h2>
+<p>I can here reference to any element such as a figure <a href="#fig-figure">Figure&nbsp;1</a> (chunk label must start with <em>fig-</em>) or tables. Using @ or Insert-&gt;Cross Reference .</p>
 </section>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.3.1 (2023-06-16)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -234,13 +244,10 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
- [1] digest_0.6.33     fastmap_1.1.1     xfun_0.39         Matrix_1.6-0     
- [5] lattice_0.21-8    reticulate_1.34.0 rappdirs_0.3.3    knitr_1.43       
- [9] htmltools_0.5.7   png_0.1-8         rmarkdown_2.23    cli_3.6.1        
-[13] grid_4.3.1        withr_2.5.0       compiler_4.3.1    rprojroot_2.0.4  
-[17] here_1.0.1        rstudioapi_0.15.0 tools_4.3.1       evaluate_0.21    
-[21] Rcpp_1.0.11       yaml_2.3.7        rlang_1.1.1       jsonlite_1.8.7   
-[25] htmlwidgets_1.6.3</code></pre>
+ [1] htmlwidgets_1.6.3 compiler_4.3.1    fastmap_1.1.1     cli_3.6.1        
+ [5] tools_4.3.1       htmltools_0.5.7   rstudioapi_0.15.0 yaml_2.3.7       
+ [9] rmarkdown_2.23    knitr_1.43        xfun_0.39         digest_0.6.33    
+[13] jsonlite_1.8.7    rlang_1.1.1       evaluate_0.21    </code></pre>
 </div>
 </div>
 </section>

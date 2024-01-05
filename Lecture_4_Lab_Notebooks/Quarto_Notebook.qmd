@@ -7,7 +7,7 @@ editor: visual
 
 # Guillem Lab Notebook
 
--   Project: Teaching Jupyter
+-   Project: Teaching Quarto
 
 -   Date: 04/01/2024
 

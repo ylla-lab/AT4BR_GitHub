@@ -1,0 +1,92 @@
+---
+title: "Quarto Notebook #2"
+author: "Guillem Ylla"
+format: 
+  html:
+    toc: true
+    theme: lumen
+    code-fold: FALSE
+editor: visual
+execute:
+  cache: false
+---
+
+# Guillem Lab Notebook #2
+
+-   Project: Teaching Quarto #2
+
+-   Date: 04/01/2024
+
+## YAML code (1st Chunk)
+
+Allows us to set different parameters to the Quarto notebook and how it will be rendered.
+
+## Chunk options
+
+### Old way
+
+In the top right corner of the chunk we have different options (in source mode) to decide what to do with the chunk. This method comes from the Rmarkdwon times.
+
+The following chunk will show code but don't run it because include=TRUE and eval=FALSE in the chunk header
+
+```{r eval=FALSE, include=TRUE}
+1 + 1
+```
+
+### Modern way
+
+In the YAML, by default we defined "code-fold: FALSE". But now, I want to fold following chunk. We can modify the behavior adding "#\| code-fold: TRUE" in the top of the chunk.
+
+```{r}
+#| label: chunk-two-two
+#| code-fold: TRUE	
+
+2+2
+```
+
+Now we will see the code ("#\| echo: true") but won't run it ("#\| eval: false")
+
+```{r}
+#| label: chunk-tree-three
+#| echo: true
+#| eval: false
+
+3+3
+```
+
+```{r}
+#| label: Chunk-declare_vars
+#| cache: true
+
+A=5
+B=5
+C=10
+```
+
+```{r}
+#| label: sum
+
+A+B
+```
+
+## Add figure
+
+```{r}
+#| label: fig-figure
+#| fig-cap: Caption for the figure 
+
+barplot(c(A,B,C))
+
+```
+
+## Cross-reference
+
+I can here reference to any element such as a figure @fig-figure (chunk label must start with *fig-*) or tables. Using @ or Insert-\>Cross Reference .
+
+## Bibliography
+
+## Session Info
+
+```{r}
+sessionInfo()
+```
