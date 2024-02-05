@@ -24,7 +24,7 @@ Allows us to set different parameters to the Quarto notebook and how it will be 
 
 ## Chunk options
 
-### RMarkdown  old way
+### RMarkdown old way
 
 In the top right corner of the chunk we have different options (in source mode) to decide what to do with the chunk. This method comes from the Rmarkdwon times.
 
@@ -82,7 +82,7 @@ barplot(c(A,B,C))
 
 ## Cross-reference
 
-I can here reference to any element such as a figure @fig-figure (chunk label must start with *fig-*) or tables. Using @ or Insert-\>Cross Reference .
+I can here reference to any element such as a figure @fig-figure (chunk label must start with *fig-*) or tables. Using \@ or Insert-\>Cross Reference .
 
 ## Citations and Bibliography
 
