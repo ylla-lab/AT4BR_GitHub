@@ -1,0 +1,189 @@
+---
+title: "Lecture 7: Data visualization, part 2: tidyverse"
+author:
+    name: Guillem Ylla, Ph.D.
+format: 
+  html:
+      theme: lumen
+      toc: true
+      toc-location: left
+      toc-depth: 6
+      toc-expand: 6
+      code-tools:
+        source: true
+        toggle: true
+      code-fold: false
+      code-summary: "Show the code"
+      code-overflow: wrap
+      page-layout: full
+editor: visual
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+#| code-fold: true
+#| output: false
+
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+```
+
+## Wide vs long format
+
+### Load and observe data
+
+Let's read a TPMs table, where for each gene we have normalized counts
+in TPMs (\~ relative expression) in 4 different samples. This means that
+we have **continuous data (TPMs) grouped by categories (genes, and
+samples)** .
+
+```{r}
+#| output: false
+Table_TPMs_wide<-readr::read_csv("/home/guillem/Documents/Teaching/FBBB_UJ_AT4BR/Data/TPMs_table_100genes.csv")
+```
+
+```{r}
+dim(Table_TPMs_wide) # table dimensions
+summary(Table_TPMs_wide) # table summary
+head(Table_TPMs_wide)# first rows of the table
+```
+
+### Transform from wide to long
+
+Let's make it to long format with the **`tidyr`** function
+`pivot_longer()`.
+
+```{r}
+Table_TPMs_long<-pivot_longer(data=Table_TPMs_wide, 
+                             cols=colnames(Table_TPMs_wide)[-1],# Cols to pivot: all except 1st
+                             values_to = "TPMs",# name of the col that contained the vals of pivoted cols
+                             names_to = "Sample")# name of the col that contains the names of the pivoted cols
+
+Table_TPMs_long
+```
+
+Now that we have in long format, we can split the Sample column into new
+columns with the Condition and replicate number.
+
+```{r}
+Table_TPMs_long_2<-Table_TPMs_long %>% 
+                        tidyr::separate(Sample, sep="_", into = c("Condition","Replicate"),remove=FALSE)
+
+Table_TPMs_long_2 
+```
+
+## First steps with ggplots
+
+Initialize the plot, with the data, and the mapping of X and Y
+variables.
+
+```{r}
+p<-ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))
+
+p
+```
+
+### Scatter plot
+
+Let's make a scatter plot. For each sample,w e want to see the
+expression of each gene as a dot:
+
+```{r}
+p+geom_point()
+
+```
+
+We can spread the points horizontally withint to reduce overlaps.
+
+```{r}
+p+geom_point( position = position_jitter()) 
+```
+
+### Boxplot
+
+Let's modify colors of outliers:
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot(outlier.colour ="darkred")
+```
+
+We can now fill boxes based on condition, fort which we need to **map**
+variable Condition to filling color with `aes()`. - Note that options
+outside `aes()` are global to the layer, and inside `aes()` are mapped
+to data.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot(outlier.colour ="darkred", aes(fill=Condition))
+```
+
+### Overlap boxplot and scatter plot
+
+We will overlap scatter plot and box plot layers in 1 plot, and apply
+following visual changes: 1- We will color the points by condition. 2-
+Color boxes by replicate. 3- Hide the boxplot outlier dots. 4- Apply
+transparency (alpha) of 50% to all the boxplot layer.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_point( position = position_jitter(), aes(color=Condition))+  # scatter plot, colored by
+  geom_boxplot(outlier.colour ="darkred", aes(fill=Replicate), alpha=0.5, outlier.shape = NA)
+```
+
+### Density plot
+
+Let's go back to a most basic chart structure. This time with a density
+plot, of TPM distribution.
+
+Note that all samples are merged in a single distribution.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=TPMs))+
+  geom_density()
+```
+
+#### One curve per sample
+
+In the mapping `aes()` we can indicate that data should be "group" by
+"Sample", and will plot 1 line per sample.
+
+Is worth noting that each `geom_` function has an internal "stat"option
+that can perform operations in data, in this case, for example to
+compute the kernel density.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=TPMs, group=Sample))+
+  geom_density(stat = "density")
+```
+
+If instead of "group", we use "color", each line will get different
+color.
+
+Note that we can either put the group/fill in `aes()` in the main
+`ggplot()`, as well as inside the `geom_` function. If applied at the
+main `ggplo()` will apply to all layers unless specified differently,
+other-ways applies to the specific layer only
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=TPMs))+
+  geom_density(aes(color=Sample)) # now color mapping is inside geom
+```
+
+## Making plots aesthetic
+
+### Colors
+
+### Palletes
+
+### Shapes
+
+## Saving plots
+
+### Format
+
+### Size

@@ -1,0 +1,33 @@
+---
+title: "Lecture 6: Data visualization, part 1: Base R"
+author:
+    name: Guillem Ylla, Ph.D.
+format: 
+  html:
+      theme: lumen
+      toc: true
+      toc-location: left
+      toc-depth: 6
+      toc-expand: 6
+      code-tools:
+        source: true
+        toggle: true
+      code-fold: false
+      code-summary: "Show the code"
+      code-overflow: wrap
+      page-layout: full
+editor: visual
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+#| code-fold: true
+#| output: false
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## 
