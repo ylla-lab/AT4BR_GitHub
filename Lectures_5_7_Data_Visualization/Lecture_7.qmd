@@ -1,7 +1,10 @@
 ---
 title: "Lecture 7: Data visualization, part 2: tidyverse"
 author:
-    name: Guillem Ylla, Ph.D.
+  name: Guillem Ylla, PhD
+  affiliations:
+    id: JU
+    name: Jagiellonian University
 format: 
   html:
       theme: lumen
@@ -12,7 +15,7 @@ format:
       code-tools:
         source: true
         toggle: true
-      code-fold: false
+      code-fold: true
       code-summary: "Show the code"
       code-overflow: wrap
       page-layout: full
@@ -174,11 +177,119 @@ ggplot(data = Table_TPMs_long_2, aes(x=TPMs))+
   geom_density(aes(color=Sample)) # now color mapping is inside geom
 ```
 
+## Barplots
+
+For barplots, we use the function `geom_bar` . By default, geom bar
+implements the function `stat=ount`, and plots number of observations
+for each X category. In this case, all samples ave 100 genes.
+
+```{r}
+ ggplot(data = Table_TPMs_long_2, aes(x=Sample))+
+  geom_bar()# same as stat="count". 
+
+```
+
+As we mentioned, `geom_` can do some calculations. In this case, for
+example, we want to calculate the mean of TPMs per sample, and plot it
+as barplot.
+
+```{r}
+ ggplot(data = Table_TPMs_long_2, aes(x=Sample))+
+  geom_bar(aes(y=TPMs),stat = "summary", fun = "mean")
+```
+
+Imagine we want to group the means by Replicate, and fill by condition.
+
+```{r}
+ ggplot(data = Table_TPMs_long_2, aes(x=Replicate, fill=Condition))+
+  geom_bar(aes(y=TPMs),stat = "summary", fun = "mean")
+```
+
+Stack bars are difficult to interpret, we can change the position with
+`position` function inside `geom_`.
+
+```{r}
+ ggplot(data = Table_TPMs_long_2, aes(x=Replicate, fill=Condition))+
+  geom_bar(aes(y=TPMs),stat = "summary", fun = "mean", position = "dodge")
+```
+
+## Data manipulation before plotting
+
+Instead of allowing ggplot to do calculation, is often more clear and
+transparent (and help to avoid errors) to first calculate the numbers
+ourselves and then use ggplot only for plotting.
+
+Let's calculate the means per group using tidyverse tools (dplyr
+package)
+
+```{r}
+Sample_mean_TPMs<-Table_TPMs_long_2 %>% #  pipe concatenated commands (Ctrl+shift+M)
+  group_by(Sample) %>% # group data by sample
+  summarise(meanTPMs=mean(TPMs)) # summarise would apply functions to each group and add it as new column
+
+Sample_mean_TPMs
+```
+
+Now, to plot it, we will need to indicate `geom_bar()` that we don't
+want to amply any calculation, just use the given values with
+`stat="identity"`. This is the same as the new function `geom_col()`
+
+```{r}
+ggplot(Sample_mean_TPMs, aes(x=Sample, y=meanTPMs))+
+    geom_bar(stat="identity") # same as geom_col()
+```
+
+Let's do more complicated computations, such as counting the proportion
+of genes with \> 10 TPMs per sample.
+
+-   Let's start creating contingency table, with the number of genes
+    that \>10 TPMs in each condition. First we group with `group_by` and
+    then with `summarise` we apply a function to count genes in each
+    group with `n()` and we asign it to a new column called "Numgenes".
+
+```{r}
+Table_TPMs_long_2 %>%
+    group_by(Sample, TPMs>10) %>%
+   summarise(Numgenes=n())
+```
+
+Now I create a new column with `mutate` , in which I divide the
+"Numgenes" by the `sum()` in each group (because we are still inside the
+grouping effect),
+
+```{r}
+Table_TPMs_long_2 %>%
+    group_by(Sample, TPMs>10) %>%
+    summarise(Numgenes=n()) %>% 
+    mutate(prop=Numgenes/sum(Numgenes))
+```
+
+We can pipe this into ggplots
+
+```{r}
+
+Table_TPMs_long_2 %>%
+    group_by(Sample, TPMs>10) %>%
+    summarise(Numgenes=n()) %>% 
+    mutate(proportion=Numgenes/sum(Numgenes)) %>% 
+    filter(`TPMs > 10`==TRUE) %>% # I fitler only the rows that contain propof genes with >10TPMs   
+        ggplot(data = . , aes(x=Sample, y=proportion))+# using ., ggplot will use as data what is piped to it
+        geom_bar(stat="identity")
+```
+
+## Axes
+
+## Labels and annotation
+
+## Facets
+
 ## Making plots aesthetic
+
+### Themes
 
 ### Colors
 
-### Palletes
+### Palettes
 
 ### Shapes
 
@@ -187,3 +298,21 @@ ggplot(data = Table_TPMs_long_2, aes(x=TPMs))+
 ### Format
 
 ### Size
+
+## Plotly
+
+## More examples
+
+### Linear Model Fit
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+```{r}
+ggplot(data = mtcars, aes(x = mpg, y = hp)) + 
+  geom_point() +
+  geom_smooth(method = "lm")+
+  theme_minimal()
+```

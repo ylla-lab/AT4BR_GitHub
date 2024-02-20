@@ -1,7 +1,10 @@
 ---
-title: "Lecture 6: Data visualization, part 1: Base R"
+title: "Lecture 5: Data visualization, part 1: Base R"
 author:
-    name: Guillem Ylla, Ph.D.
+  name: Guillem Ylla, PhD
+  affiliations:
+    id: JU
+    name: Jagiellonian University
 format: 
   html:
       theme: lumen
@@ -30,4 +33,109 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
-## 
+## Data
+
+For the following examples, we will be working on 2 datasets: **iris**
+and **Table_TPMs**.
+
+## Load data
+
+R contains datasets to work as example data. Here we load a data set
+called "iris", with measurements on 3 iris species.
+
+![](images/clipboard-4018340327.png){width="519"}
+
+```{r}
+data("iris")
+
+head(iris)
+```
+
+## Read expression data from csv
+
+We load the TPM table resulting from a mRNA-seq analysis on *D.
+melanogaster* in 3 control samples and 3 treated samples. To reduce
+computing time, the file only contains 100 genes (out of \~15,000).
+
+```{r}
+Table_TPMs<-read.csv("/home/guillem/Documents/Teaching/FBBB_UJ_AT4BR/Data/TPMs_table_100genes.csv",row.names=1)
+class(Table_TPMs)
+head(Table_TPMs)
+```
+
+## Scatter plots
+
+For this section we will use **iris** dataset.
+
+The base R function `plot()` expects to get y and x values.
+
+We can plot the scatter plot of petal's length vs with.
+
+```{r}
+plot(iris$Sepal.Length, iris$Sepal.Width)
+```
+
+Same way, we can now plot Petal length vs width.
+
+```{r}
+plot(iris$Petal.Length, iris$Petal.Width)
+```
+
+The `plot` functin will try to adjust the plot to the data. If x
+variable is categorical (e.g. Species) and the other y continuous (e.g.
+Sepal.Length) will make a boxplot.
+
+```{r}
+plot(iris$Species, iris$Sepal.Length)
+```
+
+## Boxplots
+
+here, we will use the TPMs data from gene expression.
+
+Let's make a boxlot in base R. Showing for each sample, the expression
+of all genes in it.
+
+```{r}
+boxplot(Table_TPMs)
+```
+
+Let's put labels on the axes, and title:
+
+```{r}
+boxplot(Table_TPMs, col="blue", ylab="TPMs", xlab="Sample Name", main="Boxplot gene expression per sample in TPMs")
+```
+
+Remove outliers
+
+```{r}
+boxplot(Table_TPMs, col="blue", outline=FALSE, ylab="TPMs", xlab="Sample Name", main="Boxplot gene expression per sample in TPMs")
+```
+
+## Barplots
+
+Fer example, we want to plot the mean of the TPMs per sample. First we
+compute the mean, and then we plot it as barplot.
+
+```{r}
+meanTMS_table<-colMeans(Table_TPMs)
+meanTMS_table
+```
+
+After calculating means we can plot it
+
+```{r}
+barplot(meanTMS_table, ylab="Mean TPMs", xlab="Sample")
+```
+
+For the **iris** dataset, we would do the something similar:
+
+```{r}
+mean_measurements_pers_pp = aggregate(iris[,1:4], by = list(iris$Species), FUN = mean)
+mean_measurements_pers_pp
+
+```
+
+```{r}
+barplot(mean_measurements_pers_pp$Petal.Length~mean_measurements_pers_pp$Group.1, ylab="Mean Sepal Length", xlab="Species of Iris")
+```

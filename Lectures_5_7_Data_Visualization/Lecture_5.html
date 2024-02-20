@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Guillem Ylla, Ph.D.">
+<meta name="author" content="Guillem Ylla, PhD">
 
-<title>Lecture 6: Data visualization, part 1: Base R</title>
+<title>Lecture 5: Data visualization, part 1: Base R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -87,16 +87,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="Lecture_6_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Lecture_6_files/libs/quarto-html/quarto.js"></script>
-<script src="Lecture_6_files/libs/quarto-html/popper.min.js"></script>
-<script src="Lecture_6_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="Lecture_6_files/libs/quarto-html/anchor.min.js"></script>
-<link href="Lecture_6_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Lecture_6_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="Lecture_6_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="Lecture_6_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="Lecture_6_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Lecture_5_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Lecture_5_files/libs/quarto-html/quarto.js"></script>
+<script src="Lecture_5_files/libs/quarto-html/popper.min.js"></script>
+<script src="Lecture_5_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Lecture_5_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Lecture_5_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Lecture_5_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Lecture_5_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Lecture_5_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Lecture_5_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -109,7 +109,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"></a></li>
+  <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
+  <li><a href="#read-expression-data-from-csv" id="toc-read-expression-data-from-csv" class="nav-link" data-scroll-target="#read-expression-data-from-csv">Read expression data from csv</a></li>
+  <li><a href="#scatter-plots" id="toc-scatter-plots" class="nav-link" data-scroll-target="#scatter-plots">Scatter plots</a></li>
+  <li><a href="#boxplots" id="toc-boxplots" class="nav-link" data-scroll-target="#boxplots">Boxplots</a></li>
+  <li><a href="#barplots" id="toc-barplots" class="nav-link" data-scroll-target="#barplots">Barplots</a></li>
   </ul>
 </nav>
 </div>
@@ -119,20 +124,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Lecture 6: Data visualization, part 1: Base R</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Lecture 5: Data visualization, part 1: Base R</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    Guillem Ylla, PhD 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Jagiellonian University
+          </p>
+      </div>
+    </div>
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Guillem Ylla, Ph.D. </p>
-          </div>
-  </div>
-    
+      
   
     
   </div>
@@ -146,8 +158,136 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section"></h2>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>For the following examples, we will be working on 2 datasets: <strong>iris</strong> and <strong>Table_TPMs</strong>.</p>
+</section>
+<section id="load-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-data">Load data</h2>
+<p>R contains datasets to work as example data. Here we load a data set called “iris”, with measurements on 3 iris species.</p>
+<p><img src="images/clipboard-4018340327.png" class="img-fluid" width="519"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"iris"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa</code></pre>
+</div>
+</div>
+</section>
+<section id="read-expression-data-from-csv" class="level2">
+<h2 class="anchored" data-anchor-id="read-expression-data-from-csv">Read expression data from csv</h2>
+<p>We load the TPM table resulting from a mRNA-seq analysis on <em>D. melanogaster</em> in 3 control samples and 3 treated samples. To reduce computing time, the file only contains 100 genes (out of ~15,000).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Table_TPMs<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"/home/guillem/Documents/Teaching/FBBB_UJ_AT4BR/Data/TPMs_table_100genes.csv"</span>,<span class="at">row.names=</span><span class="dv">1</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Table_TPMs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Table_TPMs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Control_1  Control_2 Control_3  Treated_1  Treated_2  Treated_3
+FBgn0000003 373.915112 207.566048 161.44662  72.235495 114.991031  54.430696
+FBgn0000008  11.923017  10.492102  14.24192   8.528656  10.690585   4.638663
+FBgn0000014   6.402287  69.447339 126.54633 109.356851  92.693003 179.472554
+FBgn0000015  14.852824   9.172688  11.50461   2.104306   1.484468   5.215200
+FBgn0000017  25.239187  24.417568  27.40004  33.333152  36.858234  21.365128
+FBgn0000018  46.079409  35.691514  28.90138  49.780581  58.253026  36.802632</code></pre>
+</div>
+</div>
+</section>
+<section id="scatter-plots" class="level2">
+<h2 class="anchored" data-anchor-id="scatter-plots">Scatter plots</h2>
+<p>For this section we will use <strong>iris</strong> dataset.</p>
+<p>The base R function <code>plot()</code> expects to get y and x values.</p>
+<p>We can plot the scatter plot of petal’s length vs with.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Sepal.Length, iris<span class="sc">$</span>Sepal.Width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lecture_5_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Same way, we can now plot Petal length vs width.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Petal.Length, iris<span class="sc">$</span>Petal.Width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lecture_5_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The <code>plot</code> functin will try to adjust the plot to the data. If x variable is categorical (e.g.&nbsp;Species) and the other y continuous (e.g. Sepal.Length) will make a boxplot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Species, iris<span class="sc">$</span>Sepal.Length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lecture_5_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="boxplots" class="level2">
+<h2 class="anchored" data-anchor-id="boxplots">Boxplots</h2>
+<p>here, we will use the TPMs data from gene expression.</p>
+<p>Let’s make a boxlot in base R. Showing for each sample, the expression of all genes in it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Table_TPMs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lecture_5_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Let’s put labels on the axes, and title:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Table_TPMs, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">ylab=</span><span class="st">"TPMs"</span>, <span class="at">xlab=</span><span class="st">"Sample Name"</span>, <span class="at">main=</span><span class="st">"Boxplot gene expression per sample in TPMs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lecture_5_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Remove outliers</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Table_TPMs, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">outline=</span><span class="cn">FALSE</span>, <span class="at">ylab=</span><span class="st">"TPMs"</span>, <span class="at">xlab=</span><span class="st">"Sample Name"</span>, <span class="at">main=</span><span class="st">"Boxplot gene expression per sample in TPMs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lecture_5_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="barplots" class="level2">
+<h2 class="anchored" data-anchor-id="barplots">Barplots</h2>
+<p>Fer example, we want to plot the mean of the TPMs per sample. First we compute the mean, and then we plot it as barplot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>meanTMS_table<span class="ot">&lt;-</span><span class="fu">colMeans</span>(Table_TPMs)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>meanTMS_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Control_1 Control_2 Control_3 Treated_1 Treated_2 Treated_3 
+ 70.27366  82.00448  79.38437  83.44722  78.91726  76.17010 </code></pre>
+</div>
+</div>
+<p>After calculating means we can plot it</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(meanTMS_table, <span class="at">ylab=</span><span class="st">"Mean TPMs"</span>, <span class="at">xlab=</span><span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lecture_5_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>For the <strong>iris</strong> dataset, we would do the something similar:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mean_measurements_pers_pp <span class="ot">=</span> <span class="fu">aggregate</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">by =</span> <span class="fu">list</span>(iris<span class="sc">$</span>Species), <span class="at">FUN =</span> mean)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>mean_measurements_pers_pp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Group.1 Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     setosa        5.006       3.428        1.462       0.246
+2 versicolor        5.936       2.770        4.260       1.326
+3  virginica        6.588       2.974        5.552       2.026</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(mean_measurements_pers_pp<span class="sc">$</span>Petal.Length<span class="sc">~</span>mean_measurements_pers_pp<span class="sc">$</span>Group<span class="fl">.1</span>, <span class="at">ylab=</span><span class="st">"Mean Sepal Length"</span>, <span class="at">xlab=</span><span class="st">"Species of Iris"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lecture_5_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <!-- -->
 
 </section>
@@ -338,39 +478,147 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Lecture 6: Data visualization, part 1: Base R"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">    name: Guillem Ylla, Ph.D.</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">      theme: lumen</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">      toc: true</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-location: left</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-depth: 6</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-expand: 6</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">      code-tools:</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">        source: true</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">        toggle: true</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">      code-fold: false</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">      code-summary: "Show the code"</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">      code-overflow: wrap</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">      page-layout: full</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">  markdown: </span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: 72</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## </span></span>
+<div class="sourceCode" id="cb20" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Lecture 5: Data visualization, part 1: Base R"</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">  name: Guillem Ylla, PhD</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">  affiliations:</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">    id: JU</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">    name: Jagiellonian University</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">      theme: lumen</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">      toc: true</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-location: left</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-depth: 6</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-expand: 6</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">      code-tools:</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">        source: true</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">        toggle: true</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co">      code-fold: false</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co">      code-summary: "Show the code"</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">      code-overflow: wrap</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co">      page-layout: full</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co">  markdown: </span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: 72</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>For the following examples, we will be working on 2 datasets: **iris**</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>and **Table_TPMs**.</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load data</span></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>R contains datasets to work as example data. Here we load a data set</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>called "iris", with measurements on 3 iris species.</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/clipboard-4018340327.png)</span>{width="519"}</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"iris"</span>)</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris)</span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Read expression data from csv</span></span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a>We load the TPM table resulting from a mRNA-seq analysis on *D.</span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>melanogaster* in 3 control samples and 3 treated samples. To reduce</span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>computing time, the file only contains 100 genes (out of \~15,000).</span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>Table_TPMs<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"/home/guillem/Documents/Teaching/FBBB_UJ_AT4BR/Data/TPMs_table_100genes.csv"</span>,<span class="at">row.names=</span><span class="dv">1</span>)</span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Table_TPMs)</span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Table_TPMs)</span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## Scatter plots</span></span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a>For this section we will use **iris** dataset.</span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>The base R function <span class="in">`plot()`</span> expects to get y and x values.</span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a>We can plot the scatter plot of petal's length vs with.</span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Sepal.Length, iris<span class="sc">$</span>Sepal.Width)</span>
+<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a>Same way, we can now plot Petal length vs width.</span>
+<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Petal.Length, iris<span class="sc">$</span>Petal.Width)</span>
+<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a>The <span class="in">`plot`</span> functin will try to adjust the plot to the data. If x</span>
+<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a>variable is categorical (e.g. Species) and the other y continuous (e.g.</span>
+<span id="cb20-96"><a href="#cb20-96" aria-hidden="true" tabindex="-1"></a>Sepal.Length) will make a boxplot.</span>
+<span id="cb20-97"><a href="#cb20-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-100"><a href="#cb20-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-101"><a href="#cb20-101" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Species, iris<span class="sc">$</span>Sepal.Length)</span>
+<span id="cb20-102"><a href="#cb20-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-103"><a href="#cb20-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-104"><a href="#cb20-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Boxplots</span></span>
+<span id="cb20-105"><a href="#cb20-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-106"><a href="#cb20-106" aria-hidden="true" tabindex="-1"></a>here, we will use the TPMs data from gene expression.</span>
+<span id="cb20-107"><a href="#cb20-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-108"><a href="#cb20-108" aria-hidden="true" tabindex="-1"></a>Let's make a boxlot in base R. Showing for each sample, the expression</span>
+<span id="cb20-109"><a href="#cb20-109" aria-hidden="true" tabindex="-1"></a>of all genes in it.</span>
+<span id="cb20-110"><a href="#cb20-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-113"><a href="#cb20-113" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-114"><a href="#cb20-114" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Table_TPMs)</span>
+<span id="cb20-115"><a href="#cb20-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-116"><a href="#cb20-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-117"><a href="#cb20-117" aria-hidden="true" tabindex="-1"></a>Let's put labels on the axes, and title:</span>
+<span id="cb20-118"><a href="#cb20-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-121"><a href="#cb20-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-122"><a href="#cb20-122" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Table_TPMs, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">ylab=</span><span class="st">"TPMs"</span>, <span class="at">xlab=</span><span class="st">"Sample Name"</span>, <span class="at">main=</span><span class="st">"Boxplot gene expression per sample in TPMs"</span>)</span>
+<span id="cb20-123"><a href="#cb20-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-124"><a href="#cb20-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-125"><a href="#cb20-125" aria-hidden="true" tabindex="-1"></a>Remove outliers</span>
+<span id="cb20-126"><a href="#cb20-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-129"><a href="#cb20-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-130"><a href="#cb20-130" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Table_TPMs, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">outline=</span><span class="cn">FALSE</span>, <span class="at">ylab=</span><span class="st">"TPMs"</span>, <span class="at">xlab=</span><span class="st">"Sample Name"</span>, <span class="at">main=</span><span class="st">"Boxplot gene expression per sample in TPMs"</span>)</span>
+<span id="cb20-131"><a href="#cb20-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-132"><a href="#cb20-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-133"><a href="#cb20-133" aria-hidden="true" tabindex="-1"></a><span class="fu">## Barplots</span></span>
+<span id="cb20-134"><a href="#cb20-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-135"><a href="#cb20-135" aria-hidden="true" tabindex="-1"></a>Fer example, we want to plot the mean of the TPMs per sample. First we</span>
+<span id="cb20-136"><a href="#cb20-136" aria-hidden="true" tabindex="-1"></a>compute the mean, and then we plot it as barplot.</span>
+<span id="cb20-137"><a href="#cb20-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-140"><a href="#cb20-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-141"><a href="#cb20-141" aria-hidden="true" tabindex="-1"></a>meanTMS_table<span class="ot">&lt;-</span><span class="fu">colMeans</span>(Table_TPMs)</span>
+<span id="cb20-142"><a href="#cb20-142" aria-hidden="true" tabindex="-1"></a>meanTMS_table</span>
+<span id="cb20-143"><a href="#cb20-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-144"><a href="#cb20-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-145"><a href="#cb20-145" aria-hidden="true" tabindex="-1"></a>After calculating means we can plot it</span>
+<span id="cb20-146"><a href="#cb20-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-149"><a href="#cb20-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-150"><a href="#cb20-150" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(meanTMS_table, <span class="at">ylab=</span><span class="st">"Mean TPMs"</span>, <span class="at">xlab=</span><span class="st">"Sample"</span>)</span>
+<span id="cb20-151"><a href="#cb20-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-152"><a href="#cb20-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-153"><a href="#cb20-153" aria-hidden="true" tabindex="-1"></a>For the **iris** dataset, we would do the something similar:</span>
+<span id="cb20-154"><a href="#cb20-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-157"><a href="#cb20-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-158"><a href="#cb20-158" aria-hidden="true" tabindex="-1"></a>mean_measurements_pers_pp <span class="ot">=</span> <span class="fu">aggregate</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">by =</span> <span class="fu">list</span>(iris<span class="sc">$</span>Species), <span class="at">FUN =</span> mean)</span>
+<span id="cb20-159"><a href="#cb20-159" aria-hidden="true" tabindex="-1"></a>mean_measurements_pers_pp</span>
+<span id="cb20-160"><a href="#cb20-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-161"><a href="#cb20-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-162"><a href="#cb20-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-165"><a href="#cb20-165" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-166"><a href="#cb20-166" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(mean_measurements_pers_pp<span class="sc">$</span>Petal.Length<span class="sc">~</span>mean_measurements_pers_pp<span class="sc">$</span>Group<span class="fl">.1</span>, <span class="at">ylab=</span><span class="st">"Mean Sepal Length"</span>, <span class="at">xlab=</span><span class="st">"Species of Iris"</span>)</span>
+<span id="cb20-167"><a href="#cb20-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

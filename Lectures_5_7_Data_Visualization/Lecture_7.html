@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Guillem Ylla, Ph.D.">
+<meta name="author" content="Guillem Ylla, PhD">
 
-<title>Lecture 7: Data visualization, part 2</title>
+<title>Lecture 7: Data visualization, part 2: tidyverse</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,6 +124,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#one-curve-per-sample" id="toc-one-curve-per-sample" class="nav-link" data-scroll-target="#one-curve-per-sample">One curve per sample</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#barplots" id="toc-barplots" class="nav-link" data-scroll-target="#barplots">Barplots</a></li>
+  <li><a href="#data-manipulation-before-plotting" id="toc-data-manipulation-before-plotting" class="nav-link" data-scroll-target="#data-manipulation-before-plotting">Data manipulation before plotting</a></li>
+  <li><a href="#axes" id="toc-axes" class="nav-link" data-scroll-target="#axes">Axes</a></li>
+  <li><a href="#labels-and-annotation" id="toc-labels-and-annotation" class="nav-link" data-scroll-target="#labels-and-annotation">Labels and annotation</a></li>
+  <li><a href="#facets" id="toc-facets" class="nav-link" data-scroll-target="#facets">Facets</a></li>
+  <li><a href="#making-plots-aesthetic" id="toc-making-plots-aesthetic" class="nav-link" data-scroll-target="#making-plots-aesthetic">Making plots aesthetic</a>
+  <ul>
+  <li><a href="#themes" id="toc-themes" class="nav-link" data-scroll-target="#themes">Themes</a></li>
+  <li><a href="#colors" id="toc-colors" class="nav-link" data-scroll-target="#colors">Colors</a></li>
+  <li><a href="#palettes" id="toc-palettes" class="nav-link" data-scroll-target="#palettes">Palettes</a></li>
+  <li><a href="#shapes" id="toc-shapes" class="nav-link" data-scroll-target="#shapes">Shapes</a></li>
+  </ul></li>
+  <li><a href="#saving-plots" id="toc-saving-plots" class="nav-link" data-scroll-target="#saving-plots">Saving plots</a>
+  <ul>
+  <li><a href="#format" id="toc-format" class="nav-link" data-scroll-target="#format">Format</a></li>
+  <li><a href="#size" id="toc-size" class="nav-link" data-scroll-target="#size">Size</a></li>
+  </ul></li>
+  <li><a href="#plotly" id="toc-plotly" class="nav-link" data-scroll-target="#plotly">Plotly</a></li>
+  <li><a href="#more-examples" id="toc-more-examples" class="nav-link" data-scroll-target="#more-examples">More examples</a>
+  <ul>
+  <li><a href="#linear-model-fit" id="toc-linear-model-fit" class="nav-link" data-scroll-target="#linear-model-fit">Linear Model Fit</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -133,20 +155,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Lecture 7: Data visualization, part 2</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Lecture 7: Data visualization, part 2: tidyverse</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    Guillem Ylla, PhD 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Jagiellonian University
+          </p>
+      </div>
+    </div>
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Guillem Ylla, Ph.D. </p>
-          </div>
-  </div>
-    
+      
   
     
   </div>
@@ -169,14 +198,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="load-and-observe-data">Load and observe data</h3>
 <p>Let’s read a TPMs table, where for each gene we have normalized counts in TPMs (~ relative expression) in 4 different samples. This means that we have <strong>continuous data (TPMs) grouped by categories (genes, and samples)</strong> .</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Table_TPMs_wide<span class="ot">&lt;-</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"/home/guillem/Documents/Teaching/FBBB_UJ_AT4BR/Data/TPMs_table_100genes.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(Table_TPMs_wide) <span class="co"># table dimensions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 100   7</code></pre>
 </div>
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Table_TPMs_wide) <span class="co"># table summary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    GeneID            Control_1         Control_2         Control_3      
  Length:100         Min.   :  0.000   Min.   :  0.000   Min.   :  0.000  
@@ -193,7 +231,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  3rd Qu.:110.834   3rd Qu.:110.926   3rd Qu.:100.0444  
  Max.   :603.564   Max.   :516.945   Max.   :581.5365  </code></pre>
 </div>
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Table_TPMs_wide)<span class="co"># first rows of the table</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 7
   GeneID      Control_1 Control_2 Control_3 Treated_1 Treated_2 Treated_3
@@ -211,12 +252,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="transform-from-wide-to-long">Transform from wide to long</h3>
 <p>Let’s make it to long format with the <strong><code>tidyr</code></strong> function <code>pivot_longer()</code>.</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long<span class="ot">&lt;-</span><span class="fu">pivot_longer</span>(<span class="at">data=</span>Table_TPMs_wide, </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cols=</span><span class="fu">colnames</span>(Table_TPMs_wide)[<span class="sc">-</span><span class="dv">1</span>],<span class="co"># Cols to pivot: all except 1st</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">values_to =</span> <span class="st">"TPMs"</span>,<span class="co"># name of the col that contained the vals of pivoted cols</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">names_to =</span> <span class="st">"Sample"</span>)<span class="co"># name of the col that contains the names of the pivoted cols</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 600 × 3
    GeneID      Sample      TPMs
@@ -236,10 +280,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Now that we have in long format, we can split the Sample column into new columns with the Condition and replicate number.</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2<span class="ot">&lt;-</span>Table_TPMs_long <span class="sc">%&gt;%</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                        tidyr<span class="sc">::</span><span class="fu">separate</span>(Sample, <span class="at">sep=</span><span class="st">"_"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Condition"</span>,<span class="st">"Replicate"</span>),<span class="at">remove=</span><span class="cn">FALSE</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 600 × 5
    GeneID      Sample    Condition Replicate   TPMs
@@ -263,9 +310,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="first-steps-with-ggplots">First steps with ggplots</h2>
 <p>Initialize the plot, with the data, and the mapping of X and Y variables.</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -274,14 +324,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="scatter-plot">Scatter plot</h3>
 <p>Let’s make a scatter plot. For each sample,w e want to see the expression of each gene as a dot:</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span><span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>We can spread the points horizontally withint to reduce overlaps.</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span><span class="fu">geom_point</span>( <span class="at">position =</span> <span class="fu">position_jitter</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -291,16 +347,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="boxplot">Boxplot</h3>
 <p>Let’s modify colors of outliers:</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>We can now fill boxes based on condition, fort which we need to <strong>map</strong> variable Condition to filling color with <code>aes()</code>. - Note that options outside <code>aes()</code> are global to the layer, and inside <code>aes()</code> are mapped to data.</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>, <span class="fu">aes</span>(<span class="at">fill=</span>Condition))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -310,9 +372,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="overlap-boxplot-and-scatter-plot">Overlap boxplot and scatter plot</h3>
 <p>We will overlap scatter plot and box plot layers in 1 plot, and apply following visual changes: 1- We will color the points by condition. 2- Color boxes by replicate. 3- Hide the boxplot outlier dots. 4- Apply transparency (alpha) of 50% to all the boxplot layer.</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="at">position =</span> <span class="fu">position_jitter</span>(), <span class="fu">aes</span>(<span class="at">color=</span>Condition))<span class="sc">+</span>  <span class="co"># scatter plot, colored by</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>, <span class="fu">aes</span>(<span class="at">fill=</span>Replicate), <span class="at">alpha=</span><span class="fl">0.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -323,8 +388,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Let’s go back to a most basic chart structure. This time with a density plot, of TPM distribution.</p>
 <p>Note that all samples are merged in a single distribution.</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs))<span class="sc">+</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -332,9 +400,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="one-curve-per-sample" class="level4">
 <h4 class="anchored" data-anchor-id="one-curve-per-sample">One curve per sample</h4>
 <p>In the mapping <code>aes()</code> we can indicate that data should be “group” by “Sample”, and will plot 1 line per sample.</p>
+<p>Is worth noting that each <code>geom_</code> function has an internal “stat”option that can perform operations in data, in this case, for example to compute the kernel density.</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs, <span class="at">group=</span>Sample))<span class="sc">+</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">stat =</span> <span class="st">"density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -342,15 +414,261 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If instead of “group”, we use “color”, each line will get different color.</p>
 <p>Note that we can either put the group/fill in <code>aes()</code> in the main <code>ggplot()</code>, as well as inside the <code>geom_</code> function. If applied at the main <code>ggplo()</code> will apply to all layers unless specified differently, other-ways applies to the specific layer only</p>
 <div class="cell">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs))<span class="sc">+</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">color=</span>Sample)) <span class="co"># now color mapping is inside geom</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="Lecture_7_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+</section>
+</section>
+<section id="barplots" class="level2">
+<h2 class="anchored" data-anchor-id="barplots">Barplots</h2>
+<p>For barplots, we use the function <code>geom_bar</code> . By default, geom bar implements the function <code>stat=ount</code>, and plots number of observations for each X category. In this case, all samples ave 100 genes.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample))<span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="co"># same as stat="count". </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Lecture_7_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As we mentioned, <code>geom_</code> can do some calculations. In this case, for example, we want to calculate the mean of TPMs per sample, and plot it as barplot.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample))<span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y=</span>TPMs),<span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> <span class="st">"mean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Lecture_7_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Imagine we want to group the means by Replicate, and fill by condition.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Replicate, <span class="at">fill=</span>Condition))<span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y=</span>TPMs),<span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> <span class="st">"mean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Lecture_7_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Stack bars are difficult to interpret, we can change the position with <code>position</code> function inside <code>geom_</code>.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Replicate, <span class="at">fill=</span>Condition))<span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y=</span>TPMs),<span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> <span class="st">"mean"</span>, <span class="at">position =</span> <span class="st">"dodge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Lecture_7_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="data-manipulation-before-plotting" class="level2">
+<h2 class="anchored" data-anchor-id="data-manipulation-before-plotting">Data manipulation before plotting</h2>
+<p>Instead of allowing ggplot to do calculation, is often more clear and transparent (and help to avoid errors) to first calculate the numbers ourselves and then use ggplot only for plotting.</p>
+<p>Let’s calculate the means per group using tidyverse tools (dplyr package)</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Sample_mean_TPMs<span class="ot">&lt;-</span>Table_TPMs_long_2 <span class="sc">%&gt;%</span> <span class="co">#  pipe concatenated commands (Ctrl+shift+M)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Sample) <span class="sc">%&gt;%</span> <span class="co"># group data by sample</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">meanTPMs=</span><span class="fu">mean</span>(TPMs)) <span class="co"># summarise would apply functions to each group and add it as new column</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>Sample_mean_TPMs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  Sample    meanTPMs
+  &lt;chr&gt;        &lt;dbl&gt;
+1 Control_1     70.3
+2 Control_2     82.0
+3 Control_3     79.4
+4 Treated_1     83.4
+5 Treated_2     78.9
+6 Treated_3     76.2</code></pre>
+</div>
+</div>
+<p>Now, to plot it, we will need to indicate <code>geom_bar()</code> that we don’t want to amply any calculation, just use the given values with <code>stat="identity"</code>. This is the same as the new function <code>geom_col()</code></p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Sample_mean_TPMs, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>meanTPMs))<span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>) <span class="co"># same as geom_col()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Lecture_7_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Let’s do more complicated computations, such as counting the proportion of genes with &gt; 10 TPMs per sample.</p>
+<ul>
+<li>Let’s start creating contingency table, with the number of genes that &gt;10 TPMs in each condition. First we group with <code>group_by</code> and then with <code>summarise</code> we apply a function to count genes in each group with <code>n()</code> and we asign it to a new column called “Numgenes”.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Sample, TPMs<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="at">Numgenes=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Sample'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 3
+# Groups:   Sample [6]
+   Sample    `TPMs &gt; 10` Numgenes
+   &lt;chr&gt;     &lt;lgl&gt;          &lt;int&gt;
+ 1 Control_1 FALSE             42
+ 2 Control_1 TRUE              58
+ 3 Control_2 FALSE             39
+ 4 Control_2 TRUE              61
+ 5 Control_3 FALSE             39
+ 6 Control_3 TRUE              61
+ 7 Treated_1 FALSE             39
+ 8 Treated_1 TRUE              61
+ 9 Treated_2 FALSE             38
+10 Treated_2 TRUE              62
+11 Treated_3 FALSE             39
+12 Treated_3 TRUE              61</code></pre>
+</div>
+</div>
+<p>Now I create a new column with <code>mutate</code> , in which I divide the “Numgenes” by the <code>sum()</code> in each group (because we are still inside the grouping effect),</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Sample, TPMs<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">Numgenes=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">prop=</span>Numgenes<span class="sc">/</span><span class="fu">sum</span>(Numgenes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Sample'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 4
+# Groups:   Sample [6]
+   Sample    `TPMs &gt; 10` Numgenes  prop
+   &lt;chr&gt;     &lt;lgl&gt;          &lt;int&gt; &lt;dbl&gt;
+ 1 Control_1 FALSE             42  0.42
+ 2 Control_1 TRUE              58  0.58
+ 3 Control_2 FALSE             39  0.39
+ 4 Control_2 TRUE              61  0.61
+ 5 Control_3 FALSE             39  0.39
+ 6 Control_3 TRUE              61  0.61
+ 7 Treated_1 FALSE             39  0.39
+ 8 Treated_1 TRUE              61  0.61
+ 9 Treated_2 FALSE             38  0.38
+10 Treated_2 TRUE              62  0.62
+11 Treated_3 FALSE             39  0.39
+12 Treated_3 TRUE              61  0.61</code></pre>
+</div>
+</div>
+<p>We can pipe this into ggplots</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Sample, TPMs<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">Numgenes=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">proportion=</span>Numgenes<span class="sc">/</span><span class="fu">sum</span>(Numgenes)) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="st">`</span><span class="at">TPMs &gt; 10</span><span class="st">`</span><span class="sc">==</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="co"># I fitler only the rows that contain propof genes with &gt;10TPMs   </span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ggplot</span>(<span class="at">data =</span> . , <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>proportion))<span class="sc">+</span><span class="co"># using ., ggplot will use as data what is piped to it</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Sample'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Lecture_7_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="axes" class="level2">
+<h2 class="anchored" data-anchor-id="axes">Axes</h2>
+</section>
+<section id="labels-and-annotation" class="level2">
+<h2 class="anchored" data-anchor-id="labels-and-annotation">Labels and annotation</h2>
+</section>
+<section id="facets" class="level2">
+<h2 class="anchored" data-anchor-id="facets">Facets</h2>
+</section>
+<section id="making-plots-aesthetic" class="level2">
+<h2 class="anchored" data-anchor-id="making-plots-aesthetic">Making plots aesthetic</h2>
+<section id="themes" class="level3">
+<h3 class="anchored" data-anchor-id="themes">Themes</h3>
+</section>
+<section id="colors" class="level3">
+<h3 class="anchored" data-anchor-id="colors">Colors</h3>
+</section>
+<section id="palettes" class="level3">
+<h3 class="anchored" data-anchor-id="palettes">Palettes</h3>
+</section>
+<section id="shapes" class="level3">
+<h3 class="anchored" data-anchor-id="shapes">Shapes</h3>
+</section>
+</section>
+<section id="saving-plots" class="level2">
+<h2 class="anchored" data-anchor-id="saving-plots">Saving plots</h2>
+<section id="format" class="level3">
+<h3 class="anchored" data-anchor-id="format">Format</h3>
+</section>
+<section id="size" class="level3">
+<h3 class="anchored" data-anchor-id="size">Size</h3>
+</section>
+</section>
+<section id="plotly" class="level2">
+<h2 class="anchored" data-anchor-id="plotly">Plotly</h2>
+</section>
+<section id="more-examples" class="level2">
+<h2 class="anchored" data-anchor-id="more-examples">More examples</h2>
+<section id="linear-model-fit" class="level3">
+<h3 class="anchored" data-anchor-id="linear-model-fit">Linear Model Fit</h3>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mtcars, <span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp)) <span class="sc">+</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)<span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Lecture_7_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <!-- -->
 
-</section>
 </section>
 </section>
 
@@ -540,177 +858,323 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Lecture 7: Data visualization, part 2"</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">    name: Guillem Ylla, Ph.D.</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">      theme: lumen</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">      toc: true</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-location: left</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-depth: 6</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-expand: 6</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co">      code-tools:</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">        source: true</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co">        toggle: true</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co">      code-fold: false</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">      code-summary: "Show the code"</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co">      code-overflow: wrap</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co">      page-layout: full</span></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co">  markdown: </span></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: 72</span></span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyr"</span>)</span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"dplyr"</span>)</span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggplot2"</span>)</span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wide vs long format</span></span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### Load and observe data</span></span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>Let's read a TPMs table, where for each gene we have normalized counts</span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>in TPMs (\~ relative expression) in 4 different samples. This means that</span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>we have **continuous data (TPMs) grouped by categories (genes, and</span>
-<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>samples)** .</span>
-<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>Table_TPMs_wide<span class="ot">&lt;-</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"/home/guillem/Documents/Teaching/FBBB_UJ_AT4BR/Data/TPMs_table_100genes.csv"</span>)</span>
-<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(Table_TPMs_wide) <span class="co"># table dimensions</span></span>
-<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Table_TPMs_wide) <span class="co"># table summary</span></span>
-<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Table_TPMs_wide)<span class="co"># first rows of the table</span></span>
-<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a><span class="fu">### Transform from wide to long</span></span>
-<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a>Let's make it to long format with the **`tidyr`** function</span>
-<span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a><span class="in">`pivot_longer()`</span>.</span>
-<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long<span class="ot">&lt;-</span><span class="fu">pivot_longer</span>(<span class="at">data=</span>Table_TPMs_wide, </span>
-<span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cols=</span><span class="fu">colnames</span>(Table_TPMs_wide)[<span class="sc">-</span><span class="dv">1</span>],<span class="co"># Cols to pivot: all except 1st</span></span>
-<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a>                             <span class="at">values_to =</span> <span class="st">"TPMs"</span>,<span class="co"># name of the col that contained the vals of pivoted cols</span></span>
-<span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a>                             <span class="at">names_to =</span> <span class="st">"Sample"</span>)<span class="co"># name of the col that contains the names of the pivoted cols</span></span>
-<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long</span>
-<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a>Now that we have in long format, we can split the Sample column into new</span>
-<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a>columns with the Condition and replicate number.</span>
-<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2<span class="ot">&lt;-</span>Table_TPMs_long <span class="sc">%&gt;%</span> </span>
-<span id="cb22-84"><a href="#cb22-84" aria-hidden="true" tabindex="-1"></a>                        tidyr<span class="sc">::</span><span class="fu">separate</span>(Sample, <span class="at">sep=</span><span class="st">"_"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Condition"</span>,<span class="st">"Replicate"</span>),<span class="at">remove=</span><span class="cn">FALSE</span>)</span>
-<span id="cb22-85"><a href="#cb22-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-86"><a href="#cb22-86" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 </span>
-<span id="cb22-87"><a href="#cb22-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-88"><a href="#cb22-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-89"><a href="#cb22-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## First steps with ggplots</span></span>
-<span id="cb22-90"><a href="#cb22-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-91"><a href="#cb22-91" aria-hidden="true" tabindex="-1"></a>Initialize the plot, with the data, and the mapping of X and Y</span>
-<span id="cb22-92"><a href="#cb22-92" aria-hidden="true" tabindex="-1"></a>variables.</span>
-<span id="cb22-93"><a href="#cb22-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-96"><a href="#cb22-96" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-97"><a href="#cb22-97" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))</span>
-<span id="cb22-98"><a href="#cb22-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-99"><a href="#cb22-99" aria-hidden="true" tabindex="-1"></a>p</span>
-<span id="cb22-100"><a href="#cb22-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-101"><a href="#cb22-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-102"><a href="#cb22-102" aria-hidden="true" tabindex="-1"></a><span class="fu">### Scatter plot</span></span>
-<span id="cb22-103"><a href="#cb22-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-104"><a href="#cb22-104" aria-hidden="true" tabindex="-1"></a>Let's make a scatter plot. For each sample,w e want to see the</span>
-<span id="cb22-105"><a href="#cb22-105" aria-hidden="true" tabindex="-1"></a>expression of each gene as a dot:</span>
-<span id="cb22-106"><a href="#cb22-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-109"><a href="#cb22-109" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-110"><a href="#cb22-110" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span><span class="fu">geom_point</span>()</span>
-<span id="cb22-111"><a href="#cb22-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-112"><a href="#cb22-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-113"><a href="#cb22-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-114"><a href="#cb22-114" aria-hidden="true" tabindex="-1"></a>We can spread the points horizontally withint to reduce overlaps.</span>
-<span id="cb22-115"><a href="#cb22-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-118"><a href="#cb22-118" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-119"><a href="#cb22-119" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span><span class="fu">geom_point</span>( <span class="at">position =</span> <span class="fu">position_jitter</span>()) </span>
-<span id="cb22-120"><a href="#cb22-120" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-121"><a href="#cb22-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-122"><a href="#cb22-122" aria-hidden="true" tabindex="-1"></a><span class="fu">### Boxplot</span></span>
-<span id="cb22-123"><a href="#cb22-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-124"><a href="#cb22-124" aria-hidden="true" tabindex="-1"></a>Let's modify colors of outliers:</span>
-<span id="cb22-125"><a href="#cb22-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-128"><a href="#cb22-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-129"><a href="#cb22-129" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
-<span id="cb22-130"><a href="#cb22-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>)</span>
-<span id="cb22-131"><a href="#cb22-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-132"><a href="#cb22-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-133"><a href="#cb22-133" aria-hidden="true" tabindex="-1"></a>We can now fill boxes based on condition, fort which we need to **map**</span>
-<span id="cb22-134"><a href="#cb22-134" aria-hidden="true" tabindex="-1"></a>variable Condition to filling color with <span class="in">`aes()`</span>. - Note that options</span>
-<span id="cb22-135"><a href="#cb22-135" aria-hidden="true" tabindex="-1"></a>outside <span class="in">`aes()`</span> are global to the layer, and inside <span class="in">`aes()`</span> are mapped</span>
-<span id="cb22-136"><a href="#cb22-136" aria-hidden="true" tabindex="-1"></a>to data.</span>
-<span id="cb22-137"><a href="#cb22-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-140"><a href="#cb22-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-141"><a href="#cb22-141" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
-<span id="cb22-142"><a href="#cb22-142" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>, <span class="fu">aes</span>(<span class="at">fill=</span>Condition))</span>
-<span id="cb22-143"><a href="#cb22-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-144"><a href="#cb22-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-145"><a href="#cb22-145" aria-hidden="true" tabindex="-1"></a><span class="fu">### Overlap boxplot and scatter plot</span></span>
-<span id="cb22-146"><a href="#cb22-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-147"><a href="#cb22-147" aria-hidden="true" tabindex="-1"></a>We will overlap scatter plot and box plot layers in 1 plot, and apply</span>
-<span id="cb22-148"><a href="#cb22-148" aria-hidden="true" tabindex="-1"></a>following visual changes: 1- We will color the points by condition. 2-</span>
-<span id="cb22-149"><a href="#cb22-149" aria-hidden="true" tabindex="-1"></a>Color boxes by replicate. 3- Hide the boxplot outlier dots. 4- Apply</span>
-<span id="cb22-150"><a href="#cb22-150" aria-hidden="true" tabindex="-1"></a>transparency (alpha) of 50% to all the boxplot layer.</span>
-<span id="cb22-151"><a href="#cb22-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-154"><a href="#cb22-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-155"><a href="#cb22-155" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
-<span id="cb22-156"><a href="#cb22-156" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="at">position =</span> <span class="fu">position_jitter</span>(), <span class="fu">aes</span>(<span class="at">color=</span>Condition))<span class="sc">+</span>  <span class="co"># scatter plot, colored by</span></span>
-<span id="cb22-157"><a href="#cb22-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>, <span class="fu">aes</span>(<span class="at">fill=</span>Replicate), <span class="at">alpha=</span><span class="fl">0.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>)</span>
-<span id="cb22-158"><a href="#cb22-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-159"><a href="#cb22-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-160"><a href="#cb22-160" aria-hidden="true" tabindex="-1"></a><span class="fu">### Density plot</span></span>
-<span id="cb22-161"><a href="#cb22-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-162"><a href="#cb22-162" aria-hidden="true" tabindex="-1"></a>Let's go back to a most basic chart structure. This time with a density</span>
-<span id="cb22-163"><a href="#cb22-163" aria-hidden="true" tabindex="-1"></a>plot, of TPM distribution.</span>
-<span id="cb22-164"><a href="#cb22-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-165"><a href="#cb22-165" aria-hidden="true" tabindex="-1"></a>Note that all samples are merged in a single distribution.</span>
-<span id="cb22-166"><a href="#cb22-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-169"><a href="#cb22-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-170"><a href="#cb22-170" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs))<span class="sc">+</span></span>
-<span id="cb22-171"><a href="#cb22-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
-<span id="cb22-172"><a href="#cb22-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-173"><a href="#cb22-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-174"><a href="#cb22-174" aria-hidden="true" tabindex="-1"></a><span class="fu">#### One curve per sample</span></span>
-<span id="cb22-175"><a href="#cb22-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-176"><a href="#cb22-176" aria-hidden="true" tabindex="-1"></a>In the mapping <span class="in">`aes()`</span> we can indicate that data should be "group" by</span>
-<span id="cb22-177"><a href="#cb22-177" aria-hidden="true" tabindex="-1"></a>"Sample", and will plot 1 line per sample.</span>
-<span id="cb22-178"><a href="#cb22-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-181"><a href="#cb22-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-182"><a href="#cb22-182" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs, <span class="at">group=</span>Sample))<span class="sc">+</span></span>
-<span id="cb22-183"><a href="#cb22-183" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
-<span id="cb22-184"><a href="#cb22-184" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-185"><a href="#cb22-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-186"><a href="#cb22-186" aria-hidden="true" tabindex="-1"></a>If instead of "group", we use "color", each line will get different</span>
-<span id="cb22-187"><a href="#cb22-187" aria-hidden="true" tabindex="-1"></a>color.</span>
-<span id="cb22-188"><a href="#cb22-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-189"><a href="#cb22-189" aria-hidden="true" tabindex="-1"></a>Note that we can either put the group/fill in <span class="in">`aes()`</span> in the main</span>
-<span id="cb22-190"><a href="#cb22-190" aria-hidden="true" tabindex="-1"></a><span class="in">`ggplot()`</span>, as well as inside the <span class="in">`geom_`</span> function. If applied at the</span>
-<span id="cb22-191"><a href="#cb22-191" aria-hidden="true" tabindex="-1"></a>main <span class="in">`ggplo()`</span> will apply to all layers unless specified differently,</span>
-<span id="cb22-192"><a href="#cb22-192" aria-hidden="true" tabindex="-1"></a>other-ways applies to the specific layer only</span>
-<span id="cb22-193"><a href="#cb22-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-196"><a href="#cb22-196" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-197"><a href="#cb22-197" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs))<span class="sc">+</span></span>
-<span id="cb22-198"><a href="#cb22-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">color=</span>Sample)) <span class="co"># now color mapping is inside geom</span></span>
-<span id="cb22-199"><a href="#cb22-199" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<div class="sourceCode" id="cb41" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Lecture 7: Data visualization, part 2: tidyverse"</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co">  name: Guillem Ylla, PhD</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="co">  affiliations:</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co">    id: JU</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co">    name: Jagiellonian University</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co">      theme: lumen</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="co">      toc: true</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-location: left</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-depth: 6</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="co">      toc-expand: 6</span></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="co">      code-tools:</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="co">        source: true</span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="co">        toggle: true</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="co">      code-fold: true</span></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="co">      code-summary: "Show the code"</span></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="co">      code-overflow: wrap</span></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="co">      page-layout: full</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="co">  markdown: </span></span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: 72</span></span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyr"</span>)</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggplot2"</span>)</span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wide vs long format</span></span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a><span class="fu">### Load and observe data</span></span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>Let's read a TPMs table, where for each gene we have normalized counts</span>
+<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>in TPMs (\~ relative expression) in 4 different samples. This means that</span>
+<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>we have **continuous data (TPMs) grouped by categories (genes, and</span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>samples)** .</span>
+<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-51"><a href="#cb41-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-52"><a href="#cb41-52" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb41-53"><a href="#cb41-53" aria-hidden="true" tabindex="-1"></a>Table_TPMs_wide<span class="ot">&lt;-</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"/home/guillem/Documents/Teaching/FBBB_UJ_AT4BR/Data/TPMs_table_100genes.csv"</span>)</span>
+<span id="cb41-54"><a href="#cb41-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-55"><a href="#cb41-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-58"><a href="#cb41-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-59"><a href="#cb41-59" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(Table_TPMs_wide) <span class="co"># table dimensions</span></span>
+<span id="cb41-60"><a href="#cb41-60" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Table_TPMs_wide) <span class="co"># table summary</span></span>
+<span id="cb41-61"><a href="#cb41-61" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Table_TPMs_wide)<span class="co"># first rows of the table</span></span>
+<span id="cb41-62"><a href="#cb41-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-63"><a href="#cb41-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-64"><a href="#cb41-64" aria-hidden="true" tabindex="-1"></a><span class="fu">### Transform from wide to long</span></span>
+<span id="cb41-65"><a href="#cb41-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-66"><a href="#cb41-66" aria-hidden="true" tabindex="-1"></a>Let's make it to long format with the **`tidyr`** function</span>
+<span id="cb41-67"><a href="#cb41-67" aria-hidden="true" tabindex="-1"></a><span class="in">`pivot_longer()`</span>.</span>
+<span id="cb41-68"><a href="#cb41-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-71"><a href="#cb41-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-72"><a href="#cb41-72" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long<span class="ot">&lt;-</span><span class="fu">pivot_longer</span>(<span class="at">data=</span>Table_TPMs_wide, </span>
+<span id="cb41-73"><a href="#cb41-73" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cols=</span><span class="fu">colnames</span>(Table_TPMs_wide)[<span class="sc">-</span><span class="dv">1</span>],<span class="co"># Cols to pivot: all except 1st</span></span>
+<span id="cb41-74"><a href="#cb41-74" aria-hidden="true" tabindex="-1"></a>                             <span class="at">values_to =</span> <span class="st">"TPMs"</span>,<span class="co"># name of the col that contained the vals of pivoted cols</span></span>
+<span id="cb41-75"><a href="#cb41-75" aria-hidden="true" tabindex="-1"></a>                             <span class="at">names_to =</span> <span class="st">"Sample"</span>)<span class="co"># name of the col that contains the names of the pivoted cols</span></span>
+<span id="cb41-76"><a href="#cb41-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-77"><a href="#cb41-77" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long</span>
+<span id="cb41-78"><a href="#cb41-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-79"><a href="#cb41-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-80"><a href="#cb41-80" aria-hidden="true" tabindex="-1"></a>Now that we have in long format, we can split the Sample column into new</span>
+<span id="cb41-81"><a href="#cb41-81" aria-hidden="true" tabindex="-1"></a>columns with the Condition and replicate number.</span>
+<span id="cb41-82"><a href="#cb41-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-85"><a href="#cb41-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-86"><a href="#cb41-86" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2<span class="ot">&lt;-</span>Table_TPMs_long <span class="sc">%&gt;%</span> </span>
+<span id="cb41-87"><a href="#cb41-87" aria-hidden="true" tabindex="-1"></a>                        tidyr<span class="sc">::</span><span class="fu">separate</span>(Sample, <span class="at">sep=</span><span class="st">"_"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Condition"</span>,<span class="st">"Replicate"</span>),<span class="at">remove=</span><span class="cn">FALSE</span>)</span>
+<span id="cb41-88"><a href="#cb41-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-89"><a href="#cb41-89" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 </span>
+<span id="cb41-90"><a href="#cb41-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-91"><a href="#cb41-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-92"><a href="#cb41-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## First steps with ggplots</span></span>
+<span id="cb41-93"><a href="#cb41-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-94"><a href="#cb41-94" aria-hidden="true" tabindex="-1"></a>Initialize the plot, with the data, and the mapping of X and Y</span>
+<span id="cb41-95"><a href="#cb41-95" aria-hidden="true" tabindex="-1"></a>variables.</span>
+<span id="cb41-96"><a href="#cb41-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-99"><a href="#cb41-99" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-100"><a href="#cb41-100" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))</span>
+<span id="cb41-101"><a href="#cb41-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-102"><a href="#cb41-102" aria-hidden="true" tabindex="-1"></a>p</span>
+<span id="cb41-103"><a href="#cb41-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-104"><a href="#cb41-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-105"><a href="#cb41-105" aria-hidden="true" tabindex="-1"></a><span class="fu">### Scatter plot</span></span>
+<span id="cb41-106"><a href="#cb41-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-107"><a href="#cb41-107" aria-hidden="true" tabindex="-1"></a>Let's make a scatter plot. For each sample,w e want to see the</span>
+<span id="cb41-108"><a href="#cb41-108" aria-hidden="true" tabindex="-1"></a>expression of each gene as a dot:</span>
+<span id="cb41-109"><a href="#cb41-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-112"><a href="#cb41-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-113"><a href="#cb41-113" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span><span class="fu">geom_point</span>()</span>
+<span id="cb41-114"><a href="#cb41-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-115"><a href="#cb41-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-116"><a href="#cb41-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-117"><a href="#cb41-117" aria-hidden="true" tabindex="-1"></a>We can spread the points horizontally withint to reduce overlaps.</span>
+<span id="cb41-118"><a href="#cb41-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-121"><a href="#cb41-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-122"><a href="#cb41-122" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span><span class="fu">geom_point</span>( <span class="at">position =</span> <span class="fu">position_jitter</span>()) </span>
+<span id="cb41-123"><a href="#cb41-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-124"><a href="#cb41-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-125"><a href="#cb41-125" aria-hidden="true" tabindex="-1"></a><span class="fu">### Boxplot</span></span>
+<span id="cb41-126"><a href="#cb41-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-127"><a href="#cb41-127" aria-hidden="true" tabindex="-1"></a>Let's modify colors of outliers:</span>
+<span id="cb41-128"><a href="#cb41-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-131"><a href="#cb41-131" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-132"><a href="#cb41-132" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
+<span id="cb41-133"><a href="#cb41-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>)</span>
+<span id="cb41-134"><a href="#cb41-134" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-135"><a href="#cb41-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-136"><a href="#cb41-136" aria-hidden="true" tabindex="-1"></a>We can now fill boxes based on condition, fort which we need to **map**</span>
+<span id="cb41-137"><a href="#cb41-137" aria-hidden="true" tabindex="-1"></a>variable Condition to filling color with <span class="in">`aes()`</span>. - Note that options</span>
+<span id="cb41-138"><a href="#cb41-138" aria-hidden="true" tabindex="-1"></a>outside <span class="in">`aes()`</span> are global to the layer, and inside <span class="in">`aes()`</span> are mapped</span>
+<span id="cb41-139"><a href="#cb41-139" aria-hidden="true" tabindex="-1"></a>to data.</span>
+<span id="cb41-140"><a href="#cb41-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-143"><a href="#cb41-143" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-144"><a href="#cb41-144" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
+<span id="cb41-145"><a href="#cb41-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>, <span class="fu">aes</span>(<span class="at">fill=</span>Condition))</span>
+<span id="cb41-146"><a href="#cb41-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-147"><a href="#cb41-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-148"><a href="#cb41-148" aria-hidden="true" tabindex="-1"></a><span class="fu">### Overlap boxplot and scatter plot</span></span>
+<span id="cb41-149"><a href="#cb41-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-150"><a href="#cb41-150" aria-hidden="true" tabindex="-1"></a>We will overlap scatter plot and box plot layers in 1 plot, and apply</span>
+<span id="cb41-151"><a href="#cb41-151" aria-hidden="true" tabindex="-1"></a>following visual changes: 1- We will color the points by condition. 2-</span>
+<span id="cb41-152"><a href="#cb41-152" aria-hidden="true" tabindex="-1"></a>Color boxes by replicate. 3- Hide the boxplot outlier dots. 4- Apply</span>
+<span id="cb41-153"><a href="#cb41-153" aria-hidden="true" tabindex="-1"></a>transparency (alpha) of 50% to all the boxplot layer.</span>
+<span id="cb41-154"><a href="#cb41-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-157"><a href="#cb41-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-158"><a href="#cb41-158" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>TPMs))<span class="sc">+</span></span>
+<span id="cb41-159"><a href="#cb41-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="at">position =</span> <span class="fu">position_jitter</span>(), <span class="fu">aes</span>(<span class="at">color=</span>Condition))<span class="sc">+</span>  <span class="co"># scatter plot, colored by</span></span>
+<span id="cb41-160"><a href="#cb41-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span><span class="st">"darkred"</span>, <span class="fu">aes</span>(<span class="at">fill=</span>Replicate), <span class="at">alpha=</span><span class="fl">0.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>)</span>
+<span id="cb41-161"><a href="#cb41-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-162"><a href="#cb41-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-163"><a href="#cb41-163" aria-hidden="true" tabindex="-1"></a><span class="fu">### Density plot</span></span>
+<span id="cb41-164"><a href="#cb41-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-165"><a href="#cb41-165" aria-hidden="true" tabindex="-1"></a>Let's go back to a most basic chart structure. This time with a density</span>
+<span id="cb41-166"><a href="#cb41-166" aria-hidden="true" tabindex="-1"></a>plot, of TPM distribution.</span>
+<span id="cb41-167"><a href="#cb41-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-168"><a href="#cb41-168" aria-hidden="true" tabindex="-1"></a>Note that all samples are merged in a single distribution.</span>
+<span id="cb41-169"><a href="#cb41-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-172"><a href="#cb41-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-173"><a href="#cb41-173" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs))<span class="sc">+</span></span>
+<span id="cb41-174"><a href="#cb41-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
+<span id="cb41-175"><a href="#cb41-175" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-176"><a href="#cb41-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-177"><a href="#cb41-177" aria-hidden="true" tabindex="-1"></a><span class="fu">#### One curve per sample</span></span>
+<span id="cb41-178"><a href="#cb41-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-179"><a href="#cb41-179" aria-hidden="true" tabindex="-1"></a>In the mapping <span class="in">`aes()`</span> we can indicate that data should be "group" by</span>
+<span id="cb41-180"><a href="#cb41-180" aria-hidden="true" tabindex="-1"></a>"Sample", and will plot 1 line per sample.</span>
+<span id="cb41-181"><a href="#cb41-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-182"><a href="#cb41-182" aria-hidden="true" tabindex="-1"></a>Is worth noting that each <span class="in">`geom_`</span> function has an internal "stat"option</span>
+<span id="cb41-183"><a href="#cb41-183" aria-hidden="true" tabindex="-1"></a>that can perform operations in data, in this case, for example to</span>
+<span id="cb41-184"><a href="#cb41-184" aria-hidden="true" tabindex="-1"></a>compute the kernel density.</span>
+<span id="cb41-185"><a href="#cb41-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-188"><a href="#cb41-188" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-189"><a href="#cb41-189" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs, <span class="at">group=</span>Sample))<span class="sc">+</span></span>
+<span id="cb41-190"><a href="#cb41-190" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">stat =</span> <span class="st">"density"</span>)</span>
+<span id="cb41-191"><a href="#cb41-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-192"><a href="#cb41-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-193"><a href="#cb41-193" aria-hidden="true" tabindex="-1"></a>If instead of "group", we use "color", each line will get different</span>
+<span id="cb41-194"><a href="#cb41-194" aria-hidden="true" tabindex="-1"></a>color.</span>
+<span id="cb41-195"><a href="#cb41-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-196"><a href="#cb41-196" aria-hidden="true" tabindex="-1"></a>Note that we can either put the group/fill in <span class="in">`aes()`</span> in the main</span>
+<span id="cb41-197"><a href="#cb41-197" aria-hidden="true" tabindex="-1"></a><span class="in">`ggplot()`</span>, as well as inside the <span class="in">`geom_`</span> function. If applied at the</span>
+<span id="cb41-198"><a href="#cb41-198" aria-hidden="true" tabindex="-1"></a>main <span class="in">`ggplo()`</span> will apply to all layers unless specified differently,</span>
+<span id="cb41-199"><a href="#cb41-199" aria-hidden="true" tabindex="-1"></a>other-ways applies to the specific layer only</span>
+<span id="cb41-200"><a href="#cb41-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-203"><a href="#cb41-203" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-204"><a href="#cb41-204" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>TPMs))<span class="sc">+</span></span>
+<span id="cb41-205"><a href="#cb41-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">color=</span>Sample)) <span class="co"># now color mapping is inside geom</span></span>
+<span id="cb41-206"><a href="#cb41-206" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-207"><a href="#cb41-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-208"><a href="#cb41-208" aria-hidden="true" tabindex="-1"></a><span class="fu">## Barplots</span></span>
+<span id="cb41-209"><a href="#cb41-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-210"><a href="#cb41-210" aria-hidden="true" tabindex="-1"></a>For barplots, we use the function <span class="in">`geom_bar`</span> . By default, geom bar</span>
+<span id="cb41-211"><a href="#cb41-211" aria-hidden="true" tabindex="-1"></a>implements the function <span class="in">`stat=ount`</span>, and plots number of observations</span>
+<span id="cb41-212"><a href="#cb41-212" aria-hidden="true" tabindex="-1"></a>for each X category. In this case, all samples ave 100 genes.</span>
+<span id="cb41-213"><a href="#cb41-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-216"><a href="#cb41-216" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-217"><a href="#cb41-217" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample))<span class="sc">+</span></span>
+<span id="cb41-218"><a href="#cb41-218" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="co"># same as stat="count". </span></span>
+<span id="cb41-219"><a href="#cb41-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-220"><a href="#cb41-220" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-221"><a href="#cb41-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-222"><a href="#cb41-222" aria-hidden="true" tabindex="-1"></a>As we mentioned, <span class="in">`geom_`</span> can do some calculations. In this case, for</span>
+<span id="cb41-223"><a href="#cb41-223" aria-hidden="true" tabindex="-1"></a>example, we want to calculate the mean of TPMs per sample, and plot it</span>
+<span id="cb41-224"><a href="#cb41-224" aria-hidden="true" tabindex="-1"></a>as barplot.</span>
+<span id="cb41-225"><a href="#cb41-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-228"><a href="#cb41-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-229"><a href="#cb41-229" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Sample))<span class="sc">+</span></span>
+<span id="cb41-230"><a href="#cb41-230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y=</span>TPMs),<span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> <span class="st">"mean"</span>)</span>
+<span id="cb41-231"><a href="#cb41-231" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-232"><a href="#cb41-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-233"><a href="#cb41-233" aria-hidden="true" tabindex="-1"></a>Imagine we want to group the means by Replicate, and fill by condition.</span>
+<span id="cb41-234"><a href="#cb41-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-237"><a href="#cb41-237" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-238"><a href="#cb41-238" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Replicate, <span class="at">fill=</span>Condition))<span class="sc">+</span></span>
+<span id="cb41-239"><a href="#cb41-239" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y=</span>TPMs),<span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> <span class="st">"mean"</span>)</span>
+<span id="cb41-240"><a href="#cb41-240" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-241"><a href="#cb41-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-242"><a href="#cb41-242" aria-hidden="true" tabindex="-1"></a>Stack bars are difficult to interpret, we can change the position with</span>
+<span id="cb41-243"><a href="#cb41-243" aria-hidden="true" tabindex="-1"></a><span class="in">`position`</span> function inside <span class="in">`geom_`</span>.</span>
+<span id="cb41-244"><a href="#cb41-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-247"><a href="#cb41-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-248"><a href="#cb41-248" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="at">data =</span> Table_TPMs_long_2, <span class="fu">aes</span>(<span class="at">x=</span>Replicate, <span class="at">fill=</span>Condition))<span class="sc">+</span></span>
+<span id="cb41-249"><a href="#cb41-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y=</span>TPMs),<span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> <span class="st">"mean"</span>, <span class="at">position =</span> <span class="st">"dodge"</span>)</span>
+<span id="cb41-250"><a href="#cb41-250" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-251"><a href="#cb41-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-252"><a href="#cb41-252" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data manipulation before plotting</span></span>
+<span id="cb41-253"><a href="#cb41-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-254"><a href="#cb41-254" aria-hidden="true" tabindex="-1"></a>Instead of allowing ggplot to do calculation, is often more clear and</span>
+<span id="cb41-255"><a href="#cb41-255" aria-hidden="true" tabindex="-1"></a>transparent (and help to avoid errors) to first calculate the numbers</span>
+<span id="cb41-256"><a href="#cb41-256" aria-hidden="true" tabindex="-1"></a>ourselves and then use ggplot only for plotting.</span>
+<span id="cb41-257"><a href="#cb41-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-258"><a href="#cb41-258" aria-hidden="true" tabindex="-1"></a>Let's calculate the means per group using tidyverse tools (dplyr</span>
+<span id="cb41-259"><a href="#cb41-259" aria-hidden="true" tabindex="-1"></a>package)</span>
+<span id="cb41-260"><a href="#cb41-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-263"><a href="#cb41-263" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-264"><a href="#cb41-264" aria-hidden="true" tabindex="-1"></a>Sample_mean_TPMs<span class="ot">&lt;-</span>Table_TPMs_long_2 <span class="sc">%&gt;%</span> <span class="co">#  pipe concatenated commands (Ctrl+shift+M)</span></span>
+<span id="cb41-265"><a href="#cb41-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Sample) <span class="sc">%&gt;%</span> <span class="co"># group data by sample</span></span>
+<span id="cb41-266"><a href="#cb41-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">meanTPMs=</span><span class="fu">mean</span>(TPMs)) <span class="co"># summarise would apply functions to each group and add it as new column</span></span>
+<span id="cb41-267"><a href="#cb41-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-268"><a href="#cb41-268" aria-hidden="true" tabindex="-1"></a>Sample_mean_TPMs</span>
+<span id="cb41-269"><a href="#cb41-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-270"><a href="#cb41-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-271"><a href="#cb41-271" aria-hidden="true" tabindex="-1"></a>Now, to plot it, we will need to indicate <span class="in">`geom_bar()`</span> that we don't</span>
+<span id="cb41-272"><a href="#cb41-272" aria-hidden="true" tabindex="-1"></a>want to amply any calculation, just use the given values with</span>
+<span id="cb41-273"><a href="#cb41-273" aria-hidden="true" tabindex="-1"></a><span class="in">`stat="identity"`</span>. This is the same as the new function <span class="in">`geom_col()`</span></span>
+<span id="cb41-274"><a href="#cb41-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-277"><a href="#cb41-277" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-278"><a href="#cb41-278" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Sample_mean_TPMs, <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>meanTPMs))<span class="sc">+</span></span>
+<span id="cb41-279"><a href="#cb41-279" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>) <span class="co"># same as geom_col()</span></span>
+<span id="cb41-280"><a href="#cb41-280" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-281"><a href="#cb41-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-282"><a href="#cb41-282" aria-hidden="true" tabindex="-1"></a>Let's do more complicated computations, such as counting the proportion</span>
+<span id="cb41-283"><a href="#cb41-283" aria-hidden="true" tabindex="-1"></a>of genes with <span class="sc">\&gt;</span> 10 TPMs per sample.</span>
+<span id="cb41-284"><a href="#cb41-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-285"><a href="#cb41-285" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Let's start creating contingency table, with the number of genes</span>
+<span id="cb41-286"><a href="#cb41-286" aria-hidden="true" tabindex="-1"></a>    that <span class="sc">\&gt;</span>10 TPMs in each condition. First we group with <span class="in">`group_by`</span> and</span>
+<span id="cb41-287"><a href="#cb41-287" aria-hidden="true" tabindex="-1"></a>    then with <span class="in">`summarise`</span> we apply a function to count genes in each</span>
+<span id="cb41-288"><a href="#cb41-288" aria-hidden="true" tabindex="-1"></a>    group with <span class="in">`n()`</span> and we asign it to a new column called "Numgenes".</span>
+<span id="cb41-289"><a href="#cb41-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-292"><a href="#cb41-292" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-293"><a href="#cb41-293" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 <span class="sc">%&gt;%</span></span>
+<span id="cb41-294"><a href="#cb41-294" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Sample, TPMs<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-295"><a href="#cb41-295" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="at">Numgenes=</span><span class="fu">n</span>())</span>
+<span id="cb41-296"><a href="#cb41-296" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-297"><a href="#cb41-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-298"><a href="#cb41-298" aria-hidden="true" tabindex="-1"></a>Now I create a new column with <span class="in">`mutate`</span> , in which I divide the</span>
+<span id="cb41-299"><a href="#cb41-299" aria-hidden="true" tabindex="-1"></a>"Numgenes" by the <span class="in">`sum()`</span> in each group (because we are still inside the</span>
+<span id="cb41-300"><a href="#cb41-300" aria-hidden="true" tabindex="-1"></a>grouping effect),</span>
+<span id="cb41-301"><a href="#cb41-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-304"><a href="#cb41-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-305"><a href="#cb41-305" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 <span class="sc">%&gt;%</span></span>
+<span id="cb41-306"><a href="#cb41-306" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Sample, TPMs<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-307"><a href="#cb41-307" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">Numgenes=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-308"><a href="#cb41-308" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">prop=</span>Numgenes<span class="sc">/</span><span class="fu">sum</span>(Numgenes))</span>
+<span id="cb41-309"><a href="#cb41-309" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-310"><a href="#cb41-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-311"><a href="#cb41-311" aria-hidden="true" tabindex="-1"></a>We can pipe this into ggplots</span>
+<span id="cb41-312"><a href="#cb41-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-315"><a href="#cb41-315" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-316"><a href="#cb41-316" aria-hidden="true" tabindex="-1"></a>Table_TPMs_long_2 <span class="sc">%&gt;%</span></span>
+<span id="cb41-317"><a href="#cb41-317" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Sample, TPMs<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-318"><a href="#cb41-318" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">Numgenes=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-319"><a href="#cb41-319" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">proportion=</span>Numgenes<span class="sc">/</span><span class="fu">sum</span>(Numgenes)) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-320"><a href="#cb41-320" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="st">`</span><span class="at">TPMs &gt; 10</span><span class="st">`</span><span class="sc">==</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="co"># I fitler only the rows that contain propof genes with &gt;10TPMs   </span></span>
+<span id="cb41-321"><a href="#cb41-321" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ggplot</span>(<span class="at">data =</span> . , <span class="fu">aes</span>(<span class="at">x=</span>Sample, <span class="at">y=</span>proportion))<span class="sc">+</span><span class="co"># using ., ggplot will use as data what is piped to it</span></span>
+<span id="cb41-322"><a href="#cb41-322" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>)</span>
+<span id="cb41-323"><a href="#cb41-323" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-324"><a href="#cb41-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-325"><a href="#cb41-325" aria-hidden="true" tabindex="-1"></a><span class="fu">## Axes</span></span>
+<span id="cb41-326"><a href="#cb41-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-327"><a href="#cb41-327" aria-hidden="true" tabindex="-1"></a><span class="fu">## Labels and annotation</span></span>
+<span id="cb41-328"><a href="#cb41-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-329"><a href="#cb41-329" aria-hidden="true" tabindex="-1"></a><span class="fu">## Facets</span></span>
+<span id="cb41-330"><a href="#cb41-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-331"><a href="#cb41-331" aria-hidden="true" tabindex="-1"></a><span class="fu">## Making plots aesthetic</span></span>
+<span id="cb41-332"><a href="#cb41-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-333"><a href="#cb41-333" aria-hidden="true" tabindex="-1"></a><span class="fu">### Themes</span></span>
+<span id="cb41-334"><a href="#cb41-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-335"><a href="#cb41-335" aria-hidden="true" tabindex="-1"></a><span class="fu">### Colors</span></span>
+<span id="cb41-336"><a href="#cb41-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-337"><a href="#cb41-337" aria-hidden="true" tabindex="-1"></a><span class="fu">### Palettes</span></span>
+<span id="cb41-338"><a href="#cb41-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-339"><a href="#cb41-339" aria-hidden="true" tabindex="-1"></a><span class="fu">### Shapes</span></span>
+<span id="cb41-340"><a href="#cb41-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-341"><a href="#cb41-341" aria-hidden="true" tabindex="-1"></a><span class="fu">## Saving plots</span></span>
+<span id="cb41-342"><a href="#cb41-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-343"><a href="#cb41-343" aria-hidden="true" tabindex="-1"></a><span class="fu">### Format</span></span>
+<span id="cb41-344"><a href="#cb41-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-345"><a href="#cb41-345" aria-hidden="true" tabindex="-1"></a><span class="fu">### Size</span></span>
+<span id="cb41-346"><a href="#cb41-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-347"><a href="#cb41-347" aria-hidden="true" tabindex="-1"></a><span class="fu">## Plotly</span></span>
+<span id="cb41-348"><a href="#cb41-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-349"><a href="#cb41-349" aria-hidden="true" tabindex="-1"></a><span class="fu">## More examples</span></span>
+<span id="cb41-350"><a href="#cb41-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-351"><a href="#cb41-351" aria-hidden="true" tabindex="-1"></a><span class="fu">### Linear Model Fit</span></span>
+<span id="cb41-352"><a href="#cb41-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-355"><a href="#cb41-355" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-356"><a href="#cb41-356" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb41-357"><a href="#cb41-357" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span>
+<span id="cb41-358"><a href="#cb41-358" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-359"><a href="#cb41-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-362"><a href="#cb41-362" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-363"><a href="#cb41-363" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mtcars, <span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp)) <span class="sc">+</span> </span>
+<span id="cb41-364"><a href="#cb41-364" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb41-365"><a href="#cb41-365" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)<span class="sc">+</span></span>
+<span id="cb41-366"><a href="#cb41-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb41-367"><a href="#cb41-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
