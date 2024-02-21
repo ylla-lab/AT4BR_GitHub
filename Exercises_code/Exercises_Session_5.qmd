@@ -44,13 +44,13 @@ and **Table_TPMs**.
 R contains datasets to work as example data. Here we load a data set
 called "iris", with measurements on 3 iris species.
 
-![](images/clipboard-4018340327.png){width="519"}
-
 ```{r}
 data("iris")
 
 head(iris)
 ```
+
+![](images/clipboard-4018340327.png)
 
 ## Read expression data from csv
 

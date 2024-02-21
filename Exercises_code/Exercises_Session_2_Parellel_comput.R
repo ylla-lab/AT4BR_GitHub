@@ -18,12 +18,12 @@ df<-data.frame(
 
 head(df)
 dim(df)
-# single thread
 
+# single thread lapply()
 t0<-system.time(c(#elapsed = time to execute the function / User CPU time = CPU time spent by the current process /system CPU time = CPU time spent by by the kernel (OS) on behalf of the current process. 
-  dfmeans<-lapply(df, MARGIN=1, FUN=mean), 
-  dfmin<-lapply(df, MARGIN=1, FUN=min) ,
-  dfmax<-lapply(df, MARGIN=1, FUN=max) 
+  dfmeans<-lapply(df, FUN=mean), 
+  dfmin<-lapply(df, FUN=min) ,
+  dfmax<-lapply(df, FUN=max) 
   ))
 
 t0
@@ -32,9 +32,9 @@ cbind(dfmeans,dfmin, dfmax)
 
 # mclapply 1 core
 t1<-system.time(c(
-  dfmeans_1<-mclapply(df, MARGIN=1, FUN=mean, mc.cores = 1), 
-  dfmin_1<-mclapply(df, MARGIN=1, FUN=min, mc.cores = 1) ,
-  dfmax_1<-mclapply(df, MARGIN=1, FUN=max, mc.cores = 1) 
+  dfmeans_1<-mclapply(df, FUN=mean, mc.cores = 1), 
+  dfmin_1<-mclapply(df, FUN=min, mc.cores = 1) ,
+  dfmax_1<-mclapply(df, FUN=max, mc.cores = 1) 
 ))
 
 t1
