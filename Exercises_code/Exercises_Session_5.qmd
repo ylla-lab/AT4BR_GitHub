@@ -7,6 +7,7 @@ author:
     name: Jagiellonian University
 format: 
   html:
+      embed-resources: true
       theme: lumen
       toc: true
       toc-location: left
