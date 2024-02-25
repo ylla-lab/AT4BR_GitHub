@@ -97,6 +97,8 @@ git config credential.helper 'cache --timeout=<seconds>'
 ![](images/NewRepo3.png)
 
 8. Click on "Code" and copy the URL of your repository.
+    - If you set up SSH key in your computer, use the SSH url. 
+    - If you use user and token, use HTTPS.
 
 ![](images/NewRepo4.png)
 
