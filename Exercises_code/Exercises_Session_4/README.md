@@ -3,7 +3,8 @@
 ------------
 
 - Guillem Ylla, Ph.D.
-- AT4BR, February 2024
+- AT4BR course
+-  February 2024
 
 ------------
 
