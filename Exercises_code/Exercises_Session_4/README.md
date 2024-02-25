@@ -136,7 +136,7 @@ git commit -m "my first commit"
 git push origin main
 ```
  - origin is the default name Git gives to the server you cloned from:
-5. Go to GitHub and you should see the [Hello_World.py](Hello_World.py) file in the repository.
+5. Go to GitHub and you should see the [Hello_World.py](hello_world.py) file in the repository.
 
 
 ## Edit files
