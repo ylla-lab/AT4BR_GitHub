@@ -2,8 +2,8 @@
 
 ------------
 
-- Guillem Ylla
-- February 2024
+- Guillem Ylla, Ph.D.
+- AT4BR, February 2024
 
 ------------
 
