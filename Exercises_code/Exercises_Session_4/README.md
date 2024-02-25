@@ -255,7 +255,14 @@ git checkout  back_to_the_future
 git push origin back_to_the_future
 ```
 
-5- If you only want to restore a single file (i.e. Hello_world.py ):
+5- Make the recovered version the main
+
+```
+git checkout main
+git merge back_to_the_future
+```
+
+6- If you only want to restore a single file (i.e. Hello_world.py ):
 
 ```
 git checkout <commit ID> Hello_world.py 
