@@ -7,6 +7,9 @@ author:
     name: Jagiellonian University
 format: 
   html:
+      df-print: paged
+# print df as tables https://quarto.org/docs/computations/r.html#data-frames
+      tidy: false
       embed-resources: true
       theme: lumen
       toc: true
@@ -24,6 +27,8 @@ editor: visual
 editor_options: 
   markdown: 
     wrap: 72
+execute:
+  cache: true
 ---
 
 ```{r}
@@ -52,47 +57,123 @@ underlying database structure*" -
     [APIs](https://www.ensembl.org/info/docs/index.html) and an R
     package in Bioconductor called
     [biomaRt](https://bioconductor.org/packages/release/bioc/html/biomaRt.html)
-    ([paper](Mapping identifiers for the integration of genomic datasets with the R/Bioconductor package biomaRt.)).
+    ([paper](Mapping%20identifiers%20for%20the%20integration%20of%20genomic%20datasets%20with%20the%20R/Bioconductor%20package%20biomaRt.)).
 
-## Using biomaRt pacakge
+## Using biomaRt package
 
 ```{r}
 library(biomaRt)
 ```
 
--   Let's assume we have gene
+### Example 1: 
+
+-   Let's set up the connections with Ensemble.
 
 ```{r}
 #get the appropriate value for the biomart argument of useEnsembl() function 
 ensembl <- useEnsembl(biomart = "genes")
+
+```
+
+-   List databases available:
+
+```{r}
+Alldatasets<-searchDatasets(mart = ensembl)
+
+head(Alldatasets)
+```
+
+-   We will select the Mouse (*Mus musculus*) database.
+
+```{r}
 chosen_dataset <- searchDatasets(mart = ensembl,pattern = "mmusculus")$dataset #look for species
+
 ensembl <- useEnsembl(biomart = "genes",dataset = chosen_dataset) #connect to ensemble db
 ```
 
-```{r}
+-   Let's check all information fields we can obtain:
 
-## GENERATE A QUERY
+```{r}
 attributes <- listAttributes(mart = ensembl) #get all possible attributes (types of information to retrieve)
+rmarkdown::paged_table(attributes)
+```
+
+-   Select attributes of interest. For example their Ensemble ID, the
+    Gene name, the chromosomes, the name of the ortholog in human, and
+    type of ortholog.
+
+```{r}
 # ^ a single query must contain attributes belonging to one page (last column of attributes table)
 # ^ for a query you need a vector of attibutes' names (first column of the attributes table)
 my_attributes <- c("ensembl_gene_id","external_gene_name","chromosome_name","hsapiens_homolog_associated_gene_name","hsapiens_homolog_orthology_type") #provides human orthologs for mice genes
-
+my_attributes
 ```
 
-```{r}
+-   Now, we can apply filters on the data genes we want to obtain.
 
+-   These are the list of filters we can apply:
+
+```{r}
 filters <- listFilters(mart = ensembl) #get all possible filtering options
+rmarkdown::paged_table(filters)
+```
+
+-   Let's check available filter options.
+
+```{r}
 # ^ for a query you need a vector of filters' names (first column of the filters table)
 # ^ each filter has a set of values to choose from - find it with listFilterOptions() function
 listFilterOptions(mart = ensembl,filter = "chromosome_name") #example of finding possible filter values
+```
+
+-   We will filter the genes in **chromosomes 1 and 2**.
+
+```{r}
 my_filters <- c("chromosome_name")
 my_filter_values <- c("1","2") #genes from mouse's chromosomes 1 & 2
-# ^ while using multiple filters, your values should be in a form of list
+```
+
+-   Let's make the query!
+
+```{r}
+my_data <- getBM(attributes = my_attributes,
+                 filters = my_filters,
+                 values = my_filter_values,
+                 mart = ensembl)
+
+rmarkdown::paged_table(my_data)
+```
+
+### Example 2
+
+-   Let's select Human databse
+
+```{r}
+ensembl <- useEnsembl(biomart = "genes")#establish connection
+searchDatasets(mart = ensembl, pattern = "sapiens")
+```
+
+```{r}
+chosen_dataset_exampe2 <- "hsapiens_gene_ensembl"
+ensembl_example2 <- useEnsembl(biomart = "genes",dataset = chosen_dataset_exampe2)
+```
+
+-   We have a list of genes of interest: ENSG00000250894,
+    ENSG00000227232, ENSG00000225880, ENSG00000188157, ENSG00000162496.
+
+-   We want to get the Gene Symbols, Chromosome, gene description, and
+    other synonyms.
+
+```{r}
+genes_of_interest<-c("ENSG00000250894", "ENSG00000227232", "ENSG00000225880", "ENSG00000188157", "ENSG00000162496")
 
 ```
 
 ```{r}
-# RETRIEVE DATA
-my_data <- getBM(attributes = my_attributes,filters = my_filters,values = my_filter_values,mart = ensembl)
+my_data_human <- getBM(attributes=c("ensembl_gene_id","hgnc_symbol","chromosome_name","external_synonym","description"), 
+              filters = 'ensembl_gene_id', 
+              values = genes_of_interest, 
+              mart = ensembl_example2)
 
+my_data_human
 ```
