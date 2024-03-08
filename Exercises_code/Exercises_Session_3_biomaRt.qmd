@@ -1,0 +1,98 @@
+---
+title: "Exercises 3 - biomaRt"
+author:
+  name: Guillem Ylla, PhD
+  affiliations:
+    id: JU
+    name: Jagiellonian University
+format: 
+  html:
+      embed-resources: true
+      theme: lumen
+      toc: true
+      toc-location: left
+      toc-depth: 6
+      toc-expand: 6
+      code-tools:
+        source: true
+        toggle: true
+      code-fold: false
+      code-summary: "Show the code"
+      code-overflow: wrap
+      page-layout: full
+editor: visual
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+#| code-fold: true
+#| output: false
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## BiomaRt
+
+"*BioMart is an easy-to-use web-based tool that allows extraction of
+data without any programming knowledge or understanding of the
+underlying database structure*" -
+<https://www.ensembl.org/info/data/biomart/how_to_use_biomart.html>
+
+-   A web server to retrieve data from many databases (unse mySQL
+    underneath).
+
+-   Allows to retrieve many different types of information (IDs, names,
+    structural info, functional info, etc.) from different databases for
+    a given list of genes/transcripts/proteins.
+
+-   In addition to web server, it also offers command line
+    [APIs](https://www.ensembl.org/info/docs/index.html) and an R
+    package in Bioconductor called
+    [biomaRt](https://bioconductor.org/packages/release/bioc/html/biomaRt.html)
+    ([paper](Mapping identifiers for the integration of genomic datasets with the R/Bioconductor package biomaRt.)).
+
+## Using biomaRt pacakge
+
+```{r}
+library(biomaRt)
+```
+
+-   Let's assume we have gene
+
+```{r}
+#get the appropriate value for the biomart argument of useEnsembl() function 
+ensembl <- useEnsembl(biomart = "genes")
+chosen_dataset <- searchDatasets(mart = ensembl,pattern = "mmusculus")$dataset #look for species
+ensembl <- useEnsembl(biomart = "genes",dataset = chosen_dataset) #connect to ensemble db
+```
+
+```{r}
+
+## GENERATE A QUERY
+attributes <- listAttributes(mart = ensembl) #get all possible attributes (types of information to retrieve)
+# ^ a single query must contain attributes belonging to one page (last column of attributes table)
+# ^ for a query you need a vector of attibutes' names (first column of the attributes table)
+my_attributes <- c("ensembl_gene_id","external_gene_name","chromosome_name","hsapiens_homolog_associated_gene_name","hsapiens_homolog_orthology_type") #provides human orthologs for mice genes
+
+```
+
+```{r}
+
+filters <- listFilters(mart = ensembl) #get all possible filtering options
+# ^ for a query you need a vector of filters' names (first column of the filters table)
+# ^ each filter has a set of values to choose from - find it with listFilterOptions() function
+listFilterOptions(mart = ensembl,filter = "chromosome_name") #example of finding possible filter values
+my_filters <- c("chromosome_name")
+my_filter_values <- c("1","2") #genes from mouse's chromosomes 1 & 2
+# ^ while using multiple filters, your values should be in a form of list
+
+```
+
+```{r}
+# RETRIEVE DATA
+my_data <- getBM(attributes = my_attributes,filters = my_filters,values = my_filter_values,mart = ensembl)
+
+```
