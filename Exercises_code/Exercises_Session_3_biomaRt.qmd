@@ -57,7 +57,7 @@ underlying database structure*" -
     [APIs](https://www.ensembl.org/info/docs/index.html) and an R
     package in Bioconductor called
     [biomaRt](https://bioconductor.org/packages/release/bioc/html/biomaRt.html)
-    ([paper](Mapping%20identifiers%20for%20the%20integration%20of%20genomic%20datasets%20with%20the%20R/Bioconductor%20package%20biomaRt.)).
+    ([paper](https://www.nature.com/articles/nprot.2009.97)).
 
 ## Using biomaRt package
 
