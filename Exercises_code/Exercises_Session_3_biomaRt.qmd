@@ -65,7 +65,7 @@ underlying database structure*" -
 library(biomaRt)
 ```
 
-### Example 1: 
+### Example 1:
 
 -   Let's set up the connections with Ensemble.
 
