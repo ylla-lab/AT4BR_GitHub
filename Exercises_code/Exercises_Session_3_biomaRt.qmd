@@ -95,6 +95,9 @@ ensembl <- useEnsembl(biomart = "genes",dataset = chosen_dataset) #connect to en
 
 ```{r}
 attributes <- listAttributes(mart = ensembl) #get all possible attributes (types of information to retrieve)
+## we can also search attributes, for example: 
+searchAttributes(mart = ensembl,pattern = "hsapiens") # looking for human homolog fields avialble
+
 rmarkdown::paged_table(attributes)
 ```
 
