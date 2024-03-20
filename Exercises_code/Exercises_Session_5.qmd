@@ -1,5 +1,5 @@
 ---
-title: "Lecture 5: Data visualization, part 1: Base R"
+title: "Exercises 5: Data visualization, part 1: Base R"
 author:
   name: Guillem Ylla, PhD
   affiliations:
@@ -10,6 +10,7 @@ format:
       embed-resources: true
       theme: lumen
       toc: true
+      toc-color: red
       toc-location: left
       toc-depth: 6
       toc-expand: 6
@@ -31,6 +32,8 @@ editor_options:
 #| output: false
 
 knitr::opts_chunk$set(echo = TRUE)
+library(rmarkdown)
+
 
 ```
 
@@ -39,7 +42,7 @@ knitr::opts_chunk$set(echo = TRUE)
 For the following examples, we will be working on 2 datasets: **iris**
 and **Table_TPMs**.
 
-## Load data
+### Load iris dataset
 
 R contains datasets to work as example data. Here we load a data set
 called "iris", with measurements on 3 iris species.
@@ -47,21 +50,21 @@ called "iris", with measurements on 3 iris species.
 ```{r}
 data("iris")
 
-head(iris)
+paged_table(iris)
 ```
 
-![](images/clipboard-4018340327.png)
+![](images/clipboard-4018340327png)
 
-## Read expression data from csv
+### Read expression data from csv
 
 We load the TPM table resulting from a mRNA-seq analysis on *D.
 melanogaster* in 3 control samples and 3 treated samples. To reduce
 computing time, the file only contains 100 genes (out of \~15,000).
 
 ```{r}
-Table_TPMs<-read.csv("/home/guillem/Documents/Teaching/FBBB_UJ_AT4BR/Data/TPMs_table_100genes.csv",row.names=1)
+Table_TPMs<-read.csv("data/TPMs_table_100genes.csv",row.names=1)
 class(Table_TPMs)
-head(Table_TPMs)
+paged_table(Table_TPMs)
 ```
 
 ## Scatter plots
@@ -73,26 +76,64 @@ The base R function `plot()` expects to get y and x values.
 We can plot the scatter plot of petal's length vs with.
 
 ```{r}
-plot(iris$Sepal.Length, iris$Sepal.Width)
+plot(x=iris$Sepal.Length, y=iris$Sepal.Width)
 ```
 
-Same way, we can now plot Petal length vs width.
+-   Same way, we can now plot Petal length depending on Petal width (we
+    can omit x= and y=).
 
 ```{r}
-plot(iris$Petal.Length, iris$Petal.Width)
+plot(iris$Petal.Length ,iris$Petal.Width)
 ```
 
-The `plot` functin will try to adjust the plot to the data. If x
+-   We will also often plot y in function of x as **y\~x**.
+
+```{r}
+plot(iris$Petal.Width ~ iris$Petal.Length)
+```
+
+### Exercise 1 {style="background-color: #fafaa0"}
+
+-   Plot Petal Length in function of Sepal Length.
+
+```{r}
+## YOUR CODE HERE
+
+```
+
+### Solution Exercise 1 {#sec-solution-exercise-3 style="background-color: #a7a0fa"}
+
+```{r}
+#| code-fold: true
+#| output: true
+
+plot(iris$Petal.Length ~ iris$Sepal.Length)
+```
+
+### Exercise 2 {style="background-color: #fafaa0"}
+
+-   Plot Petal Length per species.
+
+```{r}
+## YOUR CODE HERE
+
+```
+
+-   What happens now?
+
+### Solution Exercise 1 {style="background-color: #a7a0fa"}
+
+```{r}
+plot(iris$Petal.Length~iris$Species)
+```
+
+The `plot` function will try to adjust the plot to the data. If x
 variable is categorical (e.g. Species) and the other y continuous (e.g.
 Sepal.Length) will make a boxplot.
 
-```{r}
-plot(iris$Species, iris$Sepal.Length)
-```
-
 ## Boxplots
 
-here, we will use the TPMs data from gene expression.
+Here, we will use the **TPMs data from gene expression**.
 
 Let's make a boxlot in base R. Showing for each sample, the expression
 of all genes in it.
@@ -104,13 +145,36 @@ boxplot(Table_TPMs)
 Let's put labels on the axes, and title:
 
 ```{r}
-boxplot(Table_TPMs, col="blue", ylab="TPMs", xlab="Sample Name", main="Boxplot gene expression per sample in TPMs")
+boxplot(Table_TPMs, col="lightblue", border="darkgrey",  ylab="TPMs", xlab="Sample Name", main="Boxplot gene expression per sample in TPMs")
 ```
 
-Remove outliers
+Remove outliers.
 
 ```{r}
-boxplot(Table_TPMs, col="blue", outline=FALSE, ylab="TPMs", xlab="Sample Name", main="Boxplot gene expression per sample in TPMs")
+boxplot(Table_TPMs, col="lightblue", border="darkgrey", outline=FALSE, ylab="TPMs", xlab="Sample Name", main="Boxplot gene expression per sample in TPMs")
+```
+
+### Exercise 3 {#sec-exercise-3 style="background-color: #fafaa0"}
+
+-   Make a Boxplot of the **iris** dataset to show for each **species**
+    the **Sepal Width** using boxplot function().
+
+-   Color the boxes in a color encoded by Hex code "#a4eb34".
+
+-   Add title and labels.
+
+```{r}
+## YOUR CODE HERE
+
+```
+
+### Solution Exercise 3 {style="background-color: #a7a0fa"}
+
+```{r}
+#| code-fold: true
+#| output: true
+
+boxplot(iris$Sepal.Width ~ iris$Species , col = "#a4eb34", outline=FALSE,  ylab="Sepal Width", xlab="Speciese", main="Boxplot Sepal Width by Species")
 ```
 
 ## Barplots
@@ -140,3 +204,17 @@ mean_measurements_pers_pp
 ```{r}
 barplot(mean_measurements_pers_pp$Petal.Length~mean_measurements_pers_pp$Group.1, ylab="Mean Sepal Length", xlab="Species of Iris")
 ```
+
+## More
+
+Color
+
+Shapes
+
+.
+
+.
+
+.
+
+-   
