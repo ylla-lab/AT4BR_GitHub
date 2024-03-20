@@ -66,7 +66,7 @@ cbind(dfmeans_3,dfmin_3, dfmax_3)
 
 time_df<-data.frame(
   test=as.factor(c("1core","1core2","2core","4core")),
-  times=c(t0[3], t1[3], t2[3], t3[3])
+  times=c(t0[1], t1[1], t2[1], t3[1])
   )
 
 plot(x=time_df$test, y=time_df$times,ylab="seconds")
