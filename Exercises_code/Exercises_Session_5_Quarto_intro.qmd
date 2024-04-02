@@ -87,7 +87,7 @@ editor_options:
     -   All chunks at once.
 5.  Render.
 
-### Solution Exercise 1 {style="background-color: #a7a0fa"}
+### Solution Exercise 1 {style="background-color: #e7fccc"}
 
 ```{r}
 A<-10

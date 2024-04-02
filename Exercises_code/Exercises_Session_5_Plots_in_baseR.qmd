@@ -101,7 +101,7 @@ plot(iris$Petal.Width ~ iris$Petal.Length)
 
 ```
 
-### Solution Exercise 1 {#sec-solution-exercise-3 style="background-color: #a7a0fa"}
+### Solution Exercise 1 {#sec-solution-exercise-3 style="background-color: #e7fccc"}
 
 ```{r}
 #| code-fold: true
@@ -121,7 +121,7 @@ plot(iris$Petal.Length ~ iris$Sepal.Length)
 
 -   What happens now?
 
-### Solution Exercise 1 {style="background-color: #a7a0fa"}
+### Solution Exercise 1 {style="background-color: #e7fccc"}
 
 ```{r}
 plot(iris$Petal.Length~iris$Species)
@@ -168,7 +168,7 @@ boxplot(Table_TPMs, col="lightblue", border="darkgrey", outline=FALSE, ylab="TPM
 
 ```
 
-### Solution Exercise 3 {style="background-color: #a7a0fa"}
+### Solution Exercise 3 {style="background-color: #e7fccc"}
 
 ```{r}
 #| code-fold: true
@@ -268,7 +268,7 @@ Insert plot here as image with Markdown
 
 ```
 
-### Solution Exercise 4 {style="background-color: #a7a0fa"}
+### Solution Exercise 4 {style="background-color: #e7fccc"}
 
 ```{r}
 #| code-fold: true
