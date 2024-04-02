@@ -1,0 +1,103 @@
+---
+title: "Exercises 5:  Introduction to Quarto"
+author:
+  name: Guillem Ylla, PhD
+  affiliations:
+    id: JU
+    name: Jagiellonian University
+format: 
+  html:
+      embed-resources: true
+      theme: lumen
+      toc: true
+      toc-color: red
+      toc-location: left
+      toc-depth: 6
+      toc-expand: 6
+      code-tools:
+        source: true
+        toggle: true
+      code-fold: true
+      code-summary: "Show the code"
+      code-overflow: wrap
+      page-layout: full
+editor: visual
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Create a new Quarto document
+
+-   In RStudio:
+
+    -   "File" -\> "New File" -\> "Quarto Document".
+
+        -   It will generate a new file with a short example.
+
+-   Remember, you have 2 modes "Source" and "Visual" on the begging of
+    the above menuy bar.
+
+## Getting Started
+
+-   Text is written in Markdown.
+
+-   Before the Markdown, there is the YAML code that sets up some
+    parameters.
+
+    -   In this file, you will see my YAML code in which I set up the
+        table of contents (toc), the code to be "folded"
+
+-   Code Chunks by default are in R, but you can also use
+    Python/Julia/Bash...
+
+-   You can insert new code chunk with **Ctrl+Alt+i**
+
+-   Quarto CheatSheet:
+    <https://rstudio.github.io/cheatsheets/quarto.pdf>
+
+## Run the code
+
+-   You can run code **line by line** with **Ctrl+Enter**.
+
+-   You can run **whole chunk** with **Ctrl+Shift+Enter**.
+
+-   you can run **all chunks** with **Ctrl+Alt+R**.
+
+## Render file
+
+-   Top bar "Render"
+
+    -   Also **Ctrl+Shift+k**.
+
+### Exercise 1 {#sec-exercise-3 style="background-color: #fafaa0"}
+
+1.  Add a R code chunk.
+    -   In the chunk define **A** to **10** and **B** to **20**.
+
+    -   Show values of A and B.
+2.  Add another R chunk and sum A+B.
+3.  Add another chunk and make a barplot of the vector containing A and
+    B `c(A,B)` .
+4.  Run the code:
+    -   Line by line.
+
+    -   Chunk by chunk.
+
+    -   All chunks at once.
+5.  Render.
+
+### Solution Exercise 1 {style="background-color: #a7a0fa"}
+
+```{r}
+A<-10
+B<-20
+```
+
+```{r}
+A+B
+```
+
+```{r}
+barplot(c(A,B))
+```
