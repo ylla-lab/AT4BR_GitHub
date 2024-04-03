@@ -129,7 +129,7 @@ plot(iris$Petal.Length~iris$Species)
 
 The `plot` function will try to adjust the plot to the data. If x
 variable is categorical (e.g. Species) and the other y continuous (e.g.
-Sepal.Length) will make a boxplot.
+Petal.Length) will make a boxplot.
 
 ## Boxplots
 
@@ -202,7 +202,7 @@ mean_measurements_pers_pp
 ```
 
 ```{r}
-barplot(mean_measurements_pers_pp$Petal.Length~mean_measurements_pers_pp$Group.1, ylab="Mean Sepal Length", xlab="Species of Iris")
+barplot(mean_measurements_pers_pp$Petal.Length~mean_measurements_pers_pp$Group.1, ylab="Mean Petal Length", xlab="Species of Iris")
 ```
 
 ## Color options
