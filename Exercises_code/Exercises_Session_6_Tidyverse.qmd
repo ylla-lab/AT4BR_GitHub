@@ -82,7 +82,9 @@ A noticeable element of this library is that it incorporates the
 ```{r}
 #| warning: false
 
-library(tidyverse)
+library(tidyr)
+library(dplyr)
+library(readr)
 ```
 
 ## Read data
@@ -109,7 +111,7 @@ glimpse(TPMs_wide)
 
 ```{r}
 TPMs_long_0<- TPMs_wide %>% 
-  pivot_longer(cols=matches("Control|Treated"), names_to = "Sample", values_to = "TPMs") 
+  tidyr::pivot_longer(cols=matches("Control|Treated"), names_to = "Sample", values_to = "TPMs") 
   #pivot_longer(cols=Control_1:Treated_3) #Alternative cols= first column : last column
 
 TPMs_long_0
