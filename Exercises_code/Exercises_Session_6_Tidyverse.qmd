@@ -135,14 +135,13 @@ TPMs_long_1
 
 -   Use `select()` to get the columns GeneID, Sample, Condition, and
     TPMs into a new object called TPMs_long_2.
--   In a new chunk, use `filter()` to get those rows with TPMs \> 100.
+-   In a new chunk, use `filter()` to get those rows that contain genes
+    with TPMs \> 100.
 
 ```{r}
 ## YOUR CODE HERE
 
 ```
-
-
 
 ### Filter()
 
@@ -164,8 +163,6 @@ TPMs_long_1
 
 ```
 
-
-
 ### Group_by() and apply a function
 
 -   Now, we want to get the **mean** expression in **Control** and in
@@ -179,8 +176,6 @@ TPMs_long_1
 ## YOUR CODE HERE
 
 ```
-
-
 
 ## Join() (left_join, right_join, full_join)
 
@@ -229,7 +224,6 @@ head(Table_SymbolsGenes)
 ## YOUR CODE HERE
 
 ```
-
 
 #### Exercise 5 {style="background-color: #fafaa0"}
 
