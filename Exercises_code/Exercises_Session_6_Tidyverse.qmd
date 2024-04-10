@@ -124,7 +124,7 @@ TPMs_long_0
 
 ```{r}
 TPMs_long_1<-TPMs_long_0 %>% 
-  separate(Sample, sep="_", into=c("Condition", "TeplicateNumber"), remove=F)
+  separate(Sample, sep="_", into=c("Condition", "ReplicateNumber"), remove=F)
 
 TPMs_long_1
 ```
