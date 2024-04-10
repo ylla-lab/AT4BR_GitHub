@@ -135,8 +135,8 @@ TPMs_long_1
 
 -   Use `select()` to get the columns GeneID, Sample, Condition, and
     TPMs into a new object called TPMs_long_2.
--   In a new chunk, use `filter()` to get those rows that contain TPMs
-    \> 100.
+-   In a new chunk, use `filter()` to get those rows that contain genes
+    with TPMs \> 100.
 
 ```{r}
 ## YOUR CODE HERE
