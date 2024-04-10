@@ -142,28 +142,7 @@ TPMs_long_1
 
 ```
 
-#### Solution Exercise 1 {#sec-solution-exercise-1 style="background-color: #e7fccc"}
 
-```{r}
-#| code-fold: true
-#| output: true
-
-TPMs_long_2<-TPMs_long_1 %>% 
-  dplyr::select("GeneID", "Sample", "Condition", "TPMs")
-
-rmarkdown::paged_table(TPMs_long_2)
-```
-
-```{r}
-#| code-fold: true
-#| output: true
-
-Out_table_e1<-TPMs_long_2 %>% 
-  filter(TPMs>100) 
-
-rmarkdown::paged_table(Out_table_e1)
-
-```
 
 ### Filter()
 
@@ -185,26 +164,7 @@ rmarkdown::paged_table(Out_table_e1)
 
 ```
 
-#### Solution Exercise 2 {#sec-solution-exercise style="background-color: #e7fccc"}
 
-```{r}
-#| code-fold: true
-#| output: true
-
-TPMs_long_2 %>% 
-  dplyr::filter(GeneID == "FBgn0000003")
-```
-
-```{r}
-#| code-fold: true
-#| output: true
-
-Out_table_e2<-TPMs_long_2 %>% 
-  dplyr::filter(GeneID %in% c("FBgn0000042", "FBgn0000150", "FBgn0000261","FBgn0000318"))
-
-rmarkdown::paged_table(Out_table_e2)
-
-```
 
 ### Group_by() and apply a function
 
@@ -220,19 +180,7 @@ rmarkdown::paged_table(Out_table_e2)
 
 ```
 
-#### Solution Exercise 3 {style="background-color: #e7fccc"}
 
-```{r}
-#| code-fold: true
-#| output: true
-
-TPMs_long_2  %>% 
-  dplyr::filter(GeneID %in% c("FBgn0000008", "FBgn0000055", "FBgn0000117", "FBgn0000137")) %>% 
-  group_by(GeneID, Condition) %>% 
-  summarise(MeanTPM = mean(TPMs)) # i can assign column name (MeanTPM) at the same time I calculate it
-
-
-```
 
 ## Join() (left_join, right_join, full_join)
 
@@ -282,17 +230,6 @@ head(Table_SymbolsGenes)
 
 ```
 
-#### Solution Exercise 4 {style="background-color: #e7fccc"}
-
-```{r}
-#| code-fold: true
-#| output: true
-
-TPMs_long_2_gename<-TPMs_long_2 %>% 
-   dplyr::full_join(y=Table_SymbolsGenes, by =c("GeneID"="FLYBASE" ))
-
-head(TPMs_long_2_gename)
-```
 
 #### Exercise 5 {style="background-color: #fafaa0"}
 
@@ -311,19 +248,4 @@ across samples.
 ```{r}
 ## YOUR CODE HERE
 
-```
-
-#### Solution Exercise {style="background-color: #e7fccc"}
-
-```{r}
-#| code-fold: true
-#| output: true
-
-TPMs_long_2 %>% 
-  dplyr::group_by(GeneID) %>% # I group by gene
-  dplyr::summarise(SumTPMs=sum(TPMs)) %>% # and for each group  (gene) I sum all TPMs
-  dplyr::arrange(desc(SumTPMs)) %>%   # arrange them with decreasing expression
-  dplyr::slice_head(n=10) %>% 
-  dplyr::left_join(y=Table_SymbolsGenes, by =c("GeneID"="FLYBASE" )) %>% 
-  dplyr::select(SYMBOL, GENENAME)
 ```
