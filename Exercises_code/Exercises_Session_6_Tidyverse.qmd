@@ -55,7 +55,7 @@ A noticeable element of this library is that it incorporates the
 -   `filter()` chooses rows based on column values.
 -   `arrange()` changes the order of the rows.
     -   `desc()` inside arrange if we want them in decreasing order (by
-        default arrange sincreasingly).
+        default arrange increasingly).
 -   `slice_head()` and `slice_tail()` to show only n number of top or
     bottom rows.
 
@@ -306,7 +306,7 @@ across samples.
 
 -   Add the annotation from **Table_SymbolsGenes**.
 
--   Do it using dplyr funcitons concatenated with `%>%`.
+-   Do it using dplyr functions concatenated with `%>%`.
 
 ```{r}
 ## YOUR CODE HERE
