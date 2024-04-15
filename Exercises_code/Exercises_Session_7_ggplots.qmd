@@ -1,0 +1,149 @@
+---
+title: "Exercises Session 7:  ggplot2"
+author:
+  name: Guillem Ylla, PhD
+  affiliations:
+    id: JU
+    name: Jagiellonian University
+format: 
+  html:
+      embed-resources: true
+      theme: lumen
+      toc: true
+      toc-color: red
+      toc-location: left
+      toc-depth: 6
+      toc-expand: 6
+      code-tools:
+        source: true
+        toggle: true
+      code-fold: true
+      code-summary: "Show the code"
+      code-overflow: wrap
+      page-layout: full
+editor: visual
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+### 
+
+#### Exercise 1 {style="background-color: #fafaa0"}
+
+```{r}
+## YOUR CODE HERE
+
+```
+
+#### Solution Exercise 1 {#sec-solution-exercise-1 style="background-color: #e7fccc"}
+
+```{r}
+#| code-fold: true
+#| output: true
+
+
+```
+
+```{r}
+#| code-fold: true
+#| output: true
+
+
+
+```
+
+### 
+
+#### Exercise 2 {style="background-color: #fafaa0"}
+
+```{r}
+## YOUR CODE HERE
+
+```
+
+#### Solution Exercise 2 {#sec-solution-exercise style="background-color: #e7fccc"}
+
+```{r}
+#| code-fold: true
+#| output: true
+
+
+```
+
+```{r}
+#| code-fold: true
+#| output: true
+
+
+
+```
+
+#### Exercise 3 {style="background-color: #fafaa0"}
+
+```{r}
+## YOUR CODE HERE
+
+```
+
+#### Solution Exercise 3 {style="background-color: #e7fccc"}
+
+```{r}
+#| code-fold: true
+#| output: true
+
+
+
+
+```
+
+```{r}
+#| eval: false
+#| include: false
+
+
+
+```
+
+Here, we load the table that contains the Flybase ID, gene Symbol, and
+Gene name:
+
+```{r}
+#| warning: false
+
+
+```
+
+#### Exercise 4 {style="background-color: #fafaa0"}
+
+1.  Use `full_join()` to add the symbol and gene name to the long TPM
+    table
+
+```{r}
+## YOUR CODE HERE
+
+```
+
+#### Solution Exercise 4 {style="background-color: #e7fccc"}
+
+```{r}
+#| code-fold: true
+#| output: true
+
+```
+
+#### Exercise 5 {style="background-color: #fafaa0"}
+
+```{r}
+## YOUR CODE HERE
+
+```
+
+#### Solution Exercise {style="background-color: #e7fccc"}
+
+```{r}
+#| code-fold: true
+#| output: true
+
+
+```
