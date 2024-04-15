@@ -305,6 +305,8 @@ ggplot(Sample_mean_TPMs, aes(x=Sample, y=meanTPMs))+
 
 ```
 
+## Concatenate dplyr and ggplots
+
 Let's do more complicated computations, such as counting the proportion
 of genes with \> 10 TPMs per sample.
 
@@ -342,51 +344,107 @@ Table_TPMs_long_2 %>%
         geom_bar(stat="identity", aes(fill=Condition))
 ```
 
-## Axes
+## Labels and annotation
 
 As you know, it is important to label your axes!
 
-## Labels and annotation
+To modify the default labels (based on your variable names), we can use
+the `labs()` function,
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot( aes(fill=Condition))+
+  labs(title="Here is the title", 
+       subtitle="This is a subtitle", 
+       x="X axis name", 
+       y="Y axis name",
+       caption = "I can also add caption ....")
+```
 
 ## Facets
+
+We might want to split our plot in multiple plots, for that purpose, we
+can take advantage of `facet_wrap()` function, and split plots based on
+any variable.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot( aes(fill=Condition))+
+  facet_wrap(~Condition, scales = "free_x") # facetting by Coniditon, allowing different x axis per plot
+```
 
 ## Making plots aesthetic
 
 ### Themes
 
-### Colors
-
-### Palettes
-
-### Shapes
-
-## Saving plots
-
-### Format
-
-### Size
-
-## Plotly
-
-## More examples
-
-### Linear Model Fit
+ggplot2 comes with a series of themes that make our lives easier. Here
+are the list of basicthemes
+[here](https://ggplot2.tidyverse.org/reference/ggtheme.html). I am a
+heavy user of `theme_minimal()` as starting point for my plots.
 
 ```{r}
-data(mtcars)
-head(mtcars)
-```
-
-```{r}
-ggplot(data = mtcars, aes(x = mpg, y = hp)) + 
-  geom_point() +
-  geom_smooth(method = "lm")+
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot( aes(fill=Condition))+
   theme_minimal()
 ```
 
-### 
+Additionally, you can install the package **ggthemes**, which omes with
+many more themes (list
+[here](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/)),
+some of them following the styles of popular newspapers/platforms, such
+as Wall Street Journal, the Economist, Tableau, Google Docs Charts, etc.
+
+```{r}
+library(ggthemes)
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot( aes(fill=Condition))+
+  theme_economist()+ scale_fill_economist()+
+  labs(title = "The Economist Theme")
+```
+
+### Color palettes
+
+While default ggplot color palette is quite good for many purposes (and
+themes often comes with color palettes too), we might want to use other
+palettes.
+
+We can load palettes such as **viridis** or **brewer** and call them
+directly. Using `scale_fill_SCALE()` to map with "fill" parameter, or
+`scale_color_SCALE()` to map to "color".
+
+-   Here we use viridis
+    [palette](https://ggplot2.tidyverse.org/reference/scale_viridis.html).
+    Note we can specify palette color options such as, "viridis",
+    "magma", "rocket", etc.
+
+```{r}
+library(viridis)
+
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot( aes(fill=Condition))+
+  theme_minimal()+
+  scale_fill_viridis(discrete="TRUE", option = "viridis") # by daful things is continuous.
+```
+
+### Point Shapes
+
+![](https://lh7-us.googleusercontent.com/wTmed0Wda3SRzkjzjxjLbMAwvKkKCx2D6NSifMtq91EYOPyr78yEy64r0Vj2jcCDLTmYAWoYkCY6RjIkuRV0-9Uys2Ttq4-hAcRDIpAIeAH3md5iMJgEx_Oqb93iwylXMAYD18y77mZE7ollhw7utugIWQ=s2048)
+
+## Saving plots
 
 #### Exercise 3 {style="background-color: #fafaa0"}
+
+For a research paper, we want to plot the expression of the genes with
+\>800 TPMs within all controls or within all treated samples (tip: sum
+in each group).
+
+For each gene, we want to have it's own plot (tip: facet).
+
+Make a "publication quality" plot take care of labels, shapes, colors,
+resolution etc. The figure should be the with of the page (2 column =
+\~13 cm),
+
+Export it in svg and png.
 
 ```{r}
 ## YOUR CODE HERE
@@ -399,32 +457,103 @@ ggplot(data = mtcars, aes(x = mpg, y = hp)) +
 #| code-fold: true
 #| output: true
 
+Selected_gene_IDs<-Table_TPMs_long_2 %>% 
+  group_by(GeneID,Condition) %>% 
+  mutate(sumtpms=sum(TPMs)) %>% 
+  filter(sumtpms>900) %>% 
+  ungroup() %>% 
+  select(GeneID) %>% 
+  distinct()
 
+Selected_gene_IDs
 
+```
 
+```{r}
+Table_TPMs_for_plot<-Table_TPMs_long_2 %>% 
+  filter(GeneID %in% Selected_gene_IDs$GeneID)
+
+Table_TPMs_for_plot
 ```
 
 ```{r}
 #| eval: false
 #| include: false
 
+Plot_genes_900tpms<-ggplot(Table_TPMs_for_plot, aes(x=Condition, y=TPMs))+
+  geom_point(stat = "identity", position = position_jitter(), aes(fill=Condition), pch=21, color="black", size=2) +
+  scale_fill_brewer(palette="Set2")+
+  facet_wrap(~GeneID, ncol = 4 )+
+  theme_minimal(base_size = 8)+ # base font size 8 points
+  labs(Title="Expressio of highly expressed genes",
+       subtitle="Genes with >900 TPMs within control or treated condition",
+       y="Gene expression (TPMs)", )
 
-
+Plot_genes_900tpms
 ```
-
-Here, we load the table that contains the Flybase ID, gene Symbol, and
-Gene name:
 
 ```{r}
 #| warning: false
 
+# ggsave("images/Plot_genes_900tpms.png", Plot_genes_900tpms, width = 13, height = 10, units= "cm", dpi =300,   scale = 1)
+
+# ggsave("images/Plot_genes_900tpms.svg", Plot_genes_900tpms, width = 13, height = 10, units= "cm")
 
 ```
 
-#### Exercise 4 {style="background-color: #fafaa0"}
+## More examples
 
-1.  Use `full_join()` to add the symbol and gene name to the long TPM
-    table
+### Linear Model Fit
+
+Let's load the iris dataset.
+
+```{r}
+data(iris)
+```
+
+Here, we can even compute a linear model with `lm()` inside a
+`geom_smooth()` function.
+
+```{r}
+ggplot(data = iris, aes(x = Petal.Length, y = Sepal.Length)) + 
+  geom_point() +
+  geom_smooth(method = "lm")+
+  theme_minimal()
+```
+
+### 
+
+# Plotly
+
+We can combine gplots and plotly to create interactive plots with
+`ggplotly()`!
+
+```{r}
+#| warning: false 
+  
+library(plotly)
+
+
+MyGgpot<-ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot( aes(fill=Condition))+
+  theme_minimal()+
+  scale_fill_viridis(discrete="TRUE", option = "viridis") # by daful things is continuous.
+
+ggplotly(MyGgpot)
+
+```
+
+```{r}
+My_ggplot_lm<-ggplot(data = iris, aes(x = Petal.Length, y = Sepal.Length)) + 
+  geom_point() +
+  geom_smooth(method = "lm")+
+  theme_minimal()
+
+
+ggplotly(My_ggplot_lm)
+```
+
+#### Exercise 4 {style="background-color: #fafaa0"}
 
 ```{r}
 ## YOUR CODE HERE
@@ -454,3 +583,10 @@ Gene name:
 
 
 ```
+
+## 
+
+# Recommended bibliography
+
+-   **Book:** Data Visualization: A Practical Introduction. Auhtor:
+    Kieran Healy
