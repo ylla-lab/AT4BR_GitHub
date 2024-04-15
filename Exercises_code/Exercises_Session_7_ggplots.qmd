@@ -27,9 +27,113 @@ editor_options:
     wrap: 72
 ---
 
-### 
+```{r}
+#| code-fold: true
+#| output: false
+
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+```
+
+## 
+
+### Load and transform data
+
+Let's read a TPMs table that we used in the past weeks. Remember that
+for each gene we have normalized counts in TPMs (\~ relative expression)
+in 4 different samples. This means that we have **continuous data (TPMs)
+grouped by categories (genes, and samples)** .
+
+```{r}
+#| output: false
+Table_TPMs_wide<-readr::read_csv("data/TPMs_table_100genes.csv")
+```
+
+Let's make it to long format with the **`tidyr`** function
+`pivot_longer()`.
+
+```{r}
+Table_TPMs_long<-pivot_longer(data=Table_TPMs_wide, 
+                             cols=colnames(Table_TPMs_wide)[-1],# Cols to pivot: all except 1st
+                             values_to = "TPMs",# name of the col that contained the vals of pivoted cols
+                             names_to = "Sample")# name of the col that contains the names of the pivoted cols
+
+Table_TPMs_long
+```
+
+Now that we have in long format, we can split the Sample column into new
+columns with the Condition and replicate number.
+
+```{r}
+Table_TPMs_long_2<-Table_TPMs_long %>% 
+                        tidyr::separate(Sample, sep="_", into = c("Condition","Replicate"),remove=FALSE)
+
+Table_TPMs_long_2 
+```
+
+## First steps with ggplots
+
+Initialize the plot, with the data, and the mapping of X and Y
+variables.
+
+```{r}
+p<-ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))
+
+p
+```
+
+### Scatter plot
+
+Let's make a scatter plot. For each sample, we want to see the
+expression of each gene as a dot:
+
+```{r}
+p+geom_point()
+
+```
+
+We can spread the points horizontally withint to reduce overlaps.
+
+```{r}
+p+geom_point( position = position_jitter()) 
+```
+
+### Boxplot
+
+`geom_` functions can perform calculations. For example, they can
+calculate the median, quartiles, and everything necessary o plot a
+boxplot using `geom_boxplot`.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot()
+```
+
+Inside the `geom_` function, we can also determine colors and shapes.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot(outlier.colour ="darkred")
+```
+
+-   We can now fill boxes based on condition, fort which we need to
+    **map** variable Condition to filling color with `aes()`.
+
+    -   Note that options outside `aes()` are global to the layer, and
+        inside `aes()` are mapped to data.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot(outlier.colour ="darkred", aes(fill=Condition))
+```
 
 #### Exercise 1 {style="background-color: #fafaa0"}
+
+Use the Table_TPMs_long_2 to make a **boxplot**, in which the boxes are
+filled based on the replicate number (1, 2, or 3), and the border color
+is darkblue for all of them.
 
 ```{r}
 ## YOUR CODE HERE
@@ -42,6 +146,8 @@ editor_options:
 #| code-fold: true
 #| output: true
 
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot(color="darkblue", aes( fill=Replicate))
 
 ```
 
@@ -55,7 +161,118 @@ editor_options:
 
 ### 
 
+### Overlapping layers
+
+Because ggplots works with layers, we can also overlap different `geom_`
+layers.
+
+Here, will overlap scatter plot and box plot layers in 1 plot, and apply
+following visual changes:
+
+1- We will color the points by condition.
+
+2- Fill boxes by replicate.
+
+3- Hide the boxplot outlier dots.
+
+4- Apply transparency (alpha) of 50% to all the boxplot layer.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_point( position = position_jitter(), aes(color=Condition))+  # scatter plot, colored by
+  geom_boxplot(outlier.colour ="darkred", aes(fill=Replicate), alpha=0.5, outlier.shape = NA)
+```
+
+### Density plot
+
+Let's go back to a most basic chart structure. This time with a density
+plot, of TPM distribution.
+
+Note that all samples are merged in a single distribution.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=TPMs))+
+  geom_density()
+```
+
+#### One curve per sample
+
+In the mapping `aes()` we can indicate that data should be "group" by
+"Sample", and will plot 1 line per sample.
+
+Is worth noting that each `geom_` function has an internal "stat"option
+that can perform operations in data, in this case, for example to
+compute the kernel density.
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=TPMs, group=Sample))+
+  geom_density(stat = "density")
+```
+
+If instead of "group", we use "color", each line will get different
+color.
+
+Note that we can either put the group/fill in `aes()` in the main
+`ggplot()`, as well as inside the `geom_` function. If applied at the
+main `ggplo()` will apply to all layers unless specified differently,
+other-ways applies to the specific layer only
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=TPMs))+
+  geom_density(aes(color=Sample)) # now color mapping is inside geom
+```
+
+## Barplots
+
+For barplots, we use the function `geom_bar` . By default, geom bar
+implements the function `stat=count`, and plots number of observations
+for each X category. In this case, all samples ave 100 genes.
+
+```{r}
+ ggplot(data = Table_TPMs_long_2, aes(x=Sample))+
+  geom_bar()# same as stat="count". 
+
+```
+
+As we mentioned, `geom_` can do some calculations. In this case, for
+example, we want to calculate the mean of TPMs per sample, and plot it
+as barplot.
+
+```{r}
+ ggplot(data = Table_TPMs_long_2, aes(x=Sample))+
+  geom_bar(aes(y=TPMs),stat = "summary", fun = "mean")
+```
+
+Imagine we want to group the means by Replicate, and fill by condition.
+
+```{r}
+ ggplot(data = Table_TPMs_long_2, aes(x=Replicate, fill=Condition))+
+  geom_bar(aes(y=TPMs),stat = "summary", fun = "mean")
+```
+
+Stack bars are difficult to interpret, we can change the position with
+`position` function inside `geom_`.
+
+```{r}
+ ggplot(data = Table_TPMs_long_2, aes(x=Replicate, fill=Condition))+
+  geom_bar(aes(y=TPMs),stat = "summary", fun = "mean", position = "dodge")
+```
+
+## Data manipulation before plotting
+
+Instead of allowing ggplot to do calculation, is often more clear and
+transparent (and help to avoid errors) to first calculate the numbers
+ourselves and then use ggplot only for plotting. For that purpose, we
+will need to define `stat="identity"` , to tell stat function to use a
+given value and not attempt to calculate anything.
+
 #### Exercise 2 {style="background-color: #fafaa0"}
+
+1.  Calculate the mean TPMs per sample (tip: use dplyr functions).
+
+2.  Plot the mean expression of TPMs per sample.
+
+    a\. Fill bars by Condition.
 
 ```{r}
 ## YOUR CODE HERE
@@ -68,16 +285,106 @@ editor_options:
 #| code-fold: true
 #| output: true
 
+Sample_mean_TPMs<-Table_TPMs_long_2 %>% #  pipe concatenated commands (Ctrl+shift+M)
+  group_by(Sample,Condition,Replicate) %>% # group data by sample
+  summarise(meanTPMs=mean(TPMs)) # summarise would apply functions to each group and add it as new column
 
+Sample_mean_TPMs
 ```
+
+Now, to plot it, we will need to indicate `geom_bar()` that we don't
+want to amply any calculation, just use the given values with
+`stat="identity"`. This is the same as the new function `geom_col()`
 
 ```{r}
 #| code-fold: true
 #| output: true
 
-
+ggplot(Sample_mean_TPMs, aes(x=Sample, y=meanTPMs))+
+    geom_bar(stat="identity", aes(fill=Condition)) # same as geom_col()
 
 ```
+
+Let's do more complicated computations, such as counting the proportion
+of genes with \> 10 TPMs per sample.
+
+-   Let's start creating contingency table, with the number of genes
+    that \>10 TPMs in each condition. First we group with `group_by` and
+    then with `summarise` we apply a function to count genes in each
+    group with `n()` and we asign it to a new column called "Numgenes".
+
+```{r}
+Table_TPMs_long_2 %>%
+    group_by(Sample, TPMs>10) %>%
+   summarise(Numgenes=n())
+```
+
+Now I create a new column with `mutate` , in which I divide the
+"Numgenes" by the `sum()` in each group (because we are still inside the
+grouping effect),
+
+```{r}
+Table_TPMs_long_2 %>%
+    group_by(Sample, TPMs>10) %>%
+    summarise(Numgenes=n()) %>% 
+    mutate(prop=Numgenes/sum(Numgenes))
+```
+
+We can pipe this firectly into ggplots
+
+```{r}
+Table_TPMs_long_2 %>%
+    group_by(Sample, Condition, TPMs>10) %>%
+    summarise(Numgenes=n()) %>% 
+    mutate(proportion=Numgenes/sum(Numgenes)) %>% 
+    filter(`TPMs > 10`==TRUE) %>% # I fitler only the rows that contain propof genes with >10TPMs   
+        ggplot(data = . , aes(x=Sample, y=proportion))+# using ., ggplot will use as data what is piped to it
+        geom_bar(stat="identity", aes(fill=Condition))
+```
+
+## Axes
+
+As you know, it is important to label your axes!
+
+## Labels and annotation
+
+## Facets
+
+## Making plots aesthetic
+
+### Themes
+
+### Colors
+
+### Palettes
+
+### Shapes
+
+## Saving plots
+
+### Format
+
+### Size
+
+## Plotly
+
+## More examples
+
+### Linear Model Fit
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+```{r}
+ggplot(data = mtcars, aes(x = mpg, y = hp)) + 
+  geom_point() +
+  geom_smooth(method = "lm")+
+  theme_minimal()
+```
+
+### 
 
 #### Exercise 3 {style="background-color: #fafaa0"}
 
