@@ -151,14 +151,6 @@ ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
 
 ```
 
-```{r}
-#| code-fold: true
-#| output: true
-
-
-
-```
-
 ### 
 
 ### Overlapping layers
@@ -430,6 +422,13 @@ ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
 
 ![](https://lh7-us.googleusercontent.com/wTmed0Wda3SRzkjzjxjLbMAwvKkKCx2D6NSifMtq91EYOPyr78yEy64r0Vj2jcCDLTmYAWoYkCY6RjIkuRV0-9Uys2Ttq4-hAcRDIpAIeAH3md5iMJgEx_Oqb93iwylXMAYD18y77mZE7ollhw7utugIWQ=s2048)
 
+-   Shapes 0 to 14 are **outline only**: color to change colors.
+
+-   Shapes 15 to 20 are **fill only**: color to change colors.
+
+-   Shapes 21 to 25 are **outline + fill**: use color to for outline and
+    fill for filling.
+
 ## Saving plots
 
 #### Exercise 3 {style="background-color: #fafaa0"}
@@ -477,8 +476,7 @@ Table_TPMs_for_plot
 ```
 
 ```{r}
-#| eval: false
-#| include: false
+#| code-fold: false
 
 Plot_genes_900tpms<-ggplot(Table_TPMs_for_plot, aes(x=Condition, y=TPMs))+
   geom_point(stat = "identity", position = position_jitter(), aes(fill=Condition), pch=21, color="black", size=2) +
@@ -552,39 +550,6 @@ My_ggplot_lm<-ggplot(data = iris, aes(x = Petal.Length, y = Sepal.Length)) +
 
 ggplotly(My_ggplot_lm)
 ```
-
-#### Exercise 4 {style="background-color: #fafaa0"}
-
-```{r}
-## YOUR CODE HERE
-
-```
-
-#### Solution Exercise 4 {style="background-color: #e7fccc"}
-
-```{r}
-#| code-fold: true
-#| output: true
-
-```
-
-#### Exercise 5 {style="background-color: #fafaa0"}
-
-```{r}
-## YOUR CODE HERE
-
-```
-
-#### Solution Exercise {style="background-color: #e7fccc"}
-
-```{r}
-#| code-fold: true
-#| output: true
-
-
-```
-
-## 
 
 # Recommended bibliography
 
