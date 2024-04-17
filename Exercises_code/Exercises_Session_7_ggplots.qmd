@@ -150,6 +150,8 @@ color is darkblue for all of them.
 ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
   geom_violin(color="darkblue", aes( fill=Replicate))
 
+
+
 ```
 
 ### 
@@ -178,8 +180,8 @@ ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
 
 #### Exercise 2 {style="background-color: #fafaa0"}
 
--   Make a boxplot layer colored by condition and treatment (you can use
-    function `intersection()` when filling or coloring ).
+-   Make a boxplot layer colored by condition and replicate (you can use
+    function `interaction()` when filling or coloring ).
 -   Add a top layer with violin plots border in grey (filling
     transparent)
 
@@ -373,7 +375,7 @@ Table_TPMs_long_2 %>%
     summarise(Numgenes=n()) %>% 
     mutate(proportion=Numgenes/sum(Numgenes)) %>% 
     filter(`TPMs > 10`==TRUE) %>% # I fitler only the rows that contain propof genes with >10TPMs   
-        ggplot(data = . , aes(x=Sample, y=proportion))+# using ., ggplot will use as data what is piped to it
+        ggplot(aes(x=Sample, y=proportion))+# using ., ggplot will use as data what is piped to it
         geom_bar(stat="identity", aes(fill=Condition))
 ```
 
@@ -411,7 +413,7 @@ ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
 ### Themes
 
 ggplot2 comes with a series of themes that make our lives easier. Here
-are the list of basicthemes
+are the list of basic themes
 [here](https://ggplot2.tidyverse.org/reference/ggtheme.html). I am a
 heavy user of `theme_minimal()` as starting point for my plots.
 
@@ -431,7 +433,7 @@ as Wall Street Journal, the Economist, Tableau, Google Docs Charts, etc.
 library(ggthemes)
 ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
   geom_boxplot( aes(fill=Condition))+
-  theme_economist()+ scale_fill_economist()+
+  theme_economist()+ scale_fill_economist()
   labs(title = "The Economist Theme")
 ```
 
@@ -475,7 +477,7 @@ ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
 #### Exercise 4 {style="background-color: #fafaa0"}
 
 For a research paper, we want to plot the expression of the genes with
-\>800 TPMs within all controls or within all treated samples (tip: sum
+\>900 TPMs within all controls or within all treated samples (tip: sum
 in each group).
 
 For each gene, we want to have it's own plot (tip: facet).
@@ -534,9 +536,9 @@ Plot_genes_900tpms
 ```{r}
 #| warning: false
 
-# ggsave("images/Plot_genes_900tpms.png", Plot_genes_900tpms, width = 13, height = 10, units= "cm", dpi =300,   scale = 1)
+#ggsave("images/Plot_genes_900tpms.png", Plot_genes_900tpms, width = 13, height = 10, units= "cm", dpi =300,   scale = 1)
 
-# ggsave("images/Plot_genes_900tpms.svg", Plot_genes_900tpms, width = 13, height = 10, units= "cm")
+#ggsave("images/Plot_genes_900tpms.svg", Plot_genes_900tpms, width = 13, height = 10, units= "cm")
 
 ```
 
