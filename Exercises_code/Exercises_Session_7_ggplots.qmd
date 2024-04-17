@@ -141,19 +141,6 @@ color is darkblue for all of them.
 
 ```
 
-#### Solution Exercise 1 {#sec-solution-exercise-1 style="background-color: #e7fccc"}
-
-```{r}
-#| code-fold: true
-#| output: true
-
-ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
-  geom_violin(color="darkblue", aes( fill=Replicate))
-
-```
-
-### 
-
 ### Overlapping layers
 
 Because ggplots works with layers, we can also overlap different `geom_`
@@ -185,18 +172,6 @@ ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
 
 ```{r}
 ## YOUR CODE HERE
-```
-
-#### Solution Exercise 2 {style="background-color: #e7fccc"}
-
-```{r}
-#| code-fold: true
-#| output: true
-
-
-ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
-  geom_boxplot(aes(fill=interaction(Condition,Replicate)))+
-  geom_violin( alpha=0, color="darkgrey")
 ```
 
 ### Density plot
@@ -298,19 +273,6 @@ given value and not attempt to calculate anything.
 ```{r}
 ## YOUR CODE HERE
 
-```
-
-#### Solution Exercise 3 {#sec-solution-exercise style="background-color: #e7fccc"}
-
-```{r}
-#| code-fold: true
-#| output: true
-
-Sample_mean_TPMs<-Table_TPMs_long_2 %>% #  pipe concatenated commands (Ctrl+shift+M)
-  group_by(Sample,Condition,Replicate) %>% # group data by sample
-  summarise(meanTPMs=mean(TPMs)) # summarise would apply functions to each group and add it as new column
-
-Sample_mean_TPMs
 ```
 
 Now, to plot it, we will need to indicate `geom_bar()` that we don't
@@ -488,55 +450,6 @@ Export it in svg and png.
 
 ```{r}
 ## YOUR CODE HERE
-
-```
-
-#### Solution Exercise 4 {style="background-color: #e7fccc"}
-
-```{r}
-#| code-fold: true
-#| output: true
-
-Selected_gene_IDs<-Table_TPMs_long_2 %>% 
-  group_by(GeneID,Condition) %>% 
-  mutate(sumtpms=sum(TPMs)) %>% 
-  filter(sumtpms>900) %>% 
-  ungroup() %>% 
-  select(GeneID) %>% 
-  distinct()
-
-Selected_gene_IDs
-
-```
-
-```{r}
-Table_TPMs_for_plot<-Table_TPMs_long_2 %>% 
-  filter(GeneID %in% Selected_gene_IDs$GeneID)
-
-Table_TPMs_for_plot
-```
-
-```{r}
-#| code-fold: false
-
-Plot_genes_900tpms<-ggplot(Table_TPMs_for_plot, aes(x=Condition, y=TPMs))+
-  geom_point(stat = "identity", position = position_jitter(), aes(fill=Condition), pch=21, color="black", size=2) +
-  scale_fill_brewer(palette="Set2")+
-  facet_wrap(~GeneID, ncol = 4 )+
-  theme_minimal(base_size = 8)+ # base font size 8 points
-  labs(Title="Expressio of highly expressed genes",
-       subtitle="Genes with >900 TPMs within control or treated condition",
-       y="Gene expression (TPMs)", )
-
-Plot_genes_900tpms
-```
-
-```{r}
-#| warning: false
-
-# ggsave("images/Plot_genes_900tpms.png", Plot_genes_900tpms, width = 13, height = 10, units= "cm", dpi =300,   scale = 1)
-
-# ggsave("images/Plot_genes_900tpms.svg", Plot_genes_900tpms, width = 13, height = 10, units= "cm")
 
 ```
 
