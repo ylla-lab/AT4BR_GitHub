@@ -7,13 +7,14 @@ author:
     name: Jagiellonian University
 format: 
   html:
+      number-sections: false
+      #number-depth: 3
       embed-resources: true
       theme: lumen
       toc: true
-      toc-color: red
       toc-location: left
       toc-depth: 6
-      toc-expand: 6
+      toc-expand: true
       code-tools:
         source: true
         toggle: true
@@ -94,7 +95,7 @@ p+geom_point()
 
 ```
 
-We can spread the points horizontally withint to reduce overlaps.
+We can spread the points horizontally to reduce overlaps.
 
 ```{r}
 p+geom_point( position = position_jitter()) 
@@ -131,9 +132,9 @@ ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
 
 #### Exercise 1 {style="background-color: #fafaa0"}
 
-Use the Table_TPMs_long_2 to make a **boxplot**, in which the boxes are
-filled based on the replicate number (1, 2, or 3), and the border color
-is darkblue for all of them.
+Use the Table_TPMs_long_2 to make a **violin plot**, in which the boxes
+are filled based on the replicate number (1, 2, or 3), and the border
+color is darkblue for all of them.
 
 ```{r}
 ## YOUR CODE HERE
@@ -147,7 +148,7 @@ is darkblue for all of them.
 #| output: true
 
 ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
-  geom_boxplot(color="darkblue", aes( fill=Replicate))
+  geom_violin(color="darkblue", aes( fill=Replicate))
 
 ```
 
@@ -173,6 +174,29 @@ following visual changes:
 ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
   geom_point( position = position_jitter(), aes(color=Condition))+  # scatter plot, colored by
   geom_boxplot(outlier.colour ="darkred", aes(fill=Replicate), alpha=0.5, outlier.shape = NA)
+```
+
+#### Exercise 2 {style="background-color: #fafaa0"}
+
+-   Make a boxplot layer colored by condition and treatment (you can use
+    function `intersection()` when filling or coloring ).
+-   Add a top layer with violin plots border in grey (filling
+    transparent)
+
+```{r}
+## YOUR CODE HERE
+```
+
+#### Solution Exercise 2 {style="background-color: #e7fccc"}
+
+```{r}
+#| code-fold: true
+#| output: true
+
+
+ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
+  geom_boxplot(aes(fill=interaction(Condition,Replicate)))+
+  geom_violin( alpha=0, color="darkgrey")
 ```
 
 ### Density plot
@@ -212,6 +236,11 @@ other-ways applies to the specific layer only
 ```{r}
 ggplot(data = Table_TPMs_long_2, aes(x=TPMs))+
   geom_density(aes(color=Sample)) # now color mapping is inside geom
+```
+
+```{r}
+ggplot(data = Table_TPMs_long_2, aes(x=TPMs))+
+  geom_dotplot(binwidth=15,aes(fill=Sample), alpha=0.7) # now color mapping is inside geom
 ```
 
 ## Barplots
@@ -258,7 +287,7 @@ ourselves and then use ggplot only for plotting. For that purpose, we
 will need to define `stat="identity"` , to tell stat function to use a
 given value and not attempt to calculate anything.
 
-#### Exercise 2 {style="background-color: #fafaa0"}
+#### Exercise 3 {style="background-color: #fafaa0"}
 
 1.  Calculate the mean TPMs per sample (tip: use dplyr functions).
 
@@ -271,7 +300,7 @@ given value and not attempt to calculate anything.
 
 ```
 
-#### Solution Exercise 2 {#sec-solution-exercise style="background-color: #e7fccc"}
+#### Solution Exercise 3 {#sec-solution-exercise style="background-color: #e7fccc"}
 
 ```{r}
 #| code-fold: true
@@ -293,8 +322,20 @@ want to amply any calculation, just use the given values with
 #| output: true
 
 ggplot(Sample_mean_TPMs, aes(x=Sample, y=meanTPMs))+
-    geom_bar(stat="identity", aes(fill=Condition)) # same as geom_col()
+    geom_bar(stat="identity", aes(fill=Condition)) 
 
+```
+
+#### Geom col
+
+-   To avoid confusions with the stat function of `geom_bar()` you can
+    use `geom_col` which will not perform any stat function. Is
+    equivalent to `stat="identity"`.
+
+```{r}
+
+ggplot(Sample_mean_TPMs, aes(x=Sample, y=meanTPMs))+
+    geom_col( aes(fill=Condition)) 
 ```
 
 ## Concatenate dplyr and ggplots
@@ -431,7 +472,7 @@ ggplot(data = Table_TPMs_long_2, aes(x=Sample, y=TPMs))+
 
 ## Saving plots
 
-#### Exercise 3 {style="background-color: #fafaa0"}
+#### Exercise 4 {style="background-color: #fafaa0"}
 
 For a research paper, we want to plot the expression of the genes with
 \>800 TPMs within all controls or within all treated samples (tip: sum
@@ -450,7 +491,7 @@ Export it in svg and png.
 
 ```
 
-#### Solution Exercise 3 {style="background-color: #e7fccc"}
+#### Solution Exercise 4 {style="background-color: #e7fccc"}
 
 ```{r}
 #| code-fold: true
