@@ -23,9 +23,10 @@ fluidPage(
                         min = 0,
                         max = 10,
                         value = 2.5),
-            selectInput("color1", 
-                        "Select Color 1",
-                        c("grey","darkblue","darkred", "darkorange")
+            radioButtons(input="color1", 
+                        label="Select Color 1",
+                        selected = "darkred",
+                        choices=c("grey","darkblue","darkred", "darkorange")
                         )
         ),
         column(width=8,
@@ -42,13 +43,13 @@ fluidPage(
                     min = 0,
                     max = 10,
                     value = 2.5),
-        selectInput("color2", 
-                    "Select Color 1",
+        radioButtons("color2", 
+                    "Select Color 2",
                     c("grey","darkblue","darkred", "darkorange")
         )
       ),
       column(width=8,
-        plotOutput("distPlot_2")
+             plotlyOutput("distPlot_2")
       )
     )
 )
